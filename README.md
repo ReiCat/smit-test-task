@@ -1,2 +1,2 @@
-# smit-test-task
+# smit_test_task
 SMIT test task
