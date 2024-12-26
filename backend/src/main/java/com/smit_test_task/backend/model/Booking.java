@@ -14,10 +14,10 @@ import lombok.Setter;
 public class Booking<T> {
 
     @JsonProperty("id")
-    private Double ID;
-    
+    private Integer ID;
+
     @JsonProperty("workshopID")
-    private T workshopID;
+    private Integer workshopID;
 
     @JsonProperty("bookDate")
     private String bookDate;
@@ -28,7 +28,7 @@ public class Booking<T> {
     @JsonProperty("status")
     private Status status;
 
-    public Booking(Double ID, T workshopID, String bookDate, VehicleType vehicleType, String status) {
+    public Booking(Integer ID, Integer workshopID, String bookDate, VehicleType vehicleType, String status) {
         this.ID = ID;
         this.workshopID = workshopID;
         this.bookDate = bookDate;

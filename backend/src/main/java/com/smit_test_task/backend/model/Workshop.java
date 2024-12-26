@@ -10,10 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Workshop<T> {
-    
+public class Workshop {
+
     @JsonProperty("id")
-    private T ID;
+    private Integer ID;
 
     @JsonProperty("name")
     private String name;
@@ -27,7 +27,7 @@ public class Workshop<T> {
     @JsonProperty("apiUrl")
     private String apiUrl;
 
-    public Workshop(T ID, String name, String address, String[] vehicleTypes, String apiUrl) {
+    public Workshop(Integer ID, String name, String address, String[] vehicleTypes, String apiUrl) {
         this.ID = ID;
         this.name = name;
         this.address = address;

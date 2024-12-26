@@ -27,6 +27,14 @@ dependencies {
 	
 	testCompileOnly 'org.projectlombok:lombok:1.18.36'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+	// Dependency for working with Jackson JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+	// Dependency for working with Jackson XML
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
 tasks.named('test') {

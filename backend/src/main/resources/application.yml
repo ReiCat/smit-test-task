@@ -5,6 +5,7 @@ workshops:
     vehicleTypes:
       - Car
     apiUrl: http://localhost:9004/api/v2/tire-change-times
+    contentType: application/json
   - id: 2
     name: Manchester
     address: 14 Bury New Rd, Manchester
@@ -12,3 +13,4 @@ workshops:
       - Car
       - Truck
     apiUrl: http://localhost:9003/api/v1/tire-change-times
+    contentType: text/xml
