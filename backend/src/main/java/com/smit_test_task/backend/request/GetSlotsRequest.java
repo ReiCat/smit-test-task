@@ -1,42 +1,60 @@
 package com.smit_test_task.backend.request;
 
-import java.time.LocalDate;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smit_test_task.backend.model.Slot;
-import com.smit_test_task.backend.model.XmlSlot;
-import com.smit_test_task.backend.processors.XmlProcessor;
-import com.smit_test_task.backend.processors.JsonProcessor;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.smit_test_task.backend.model.Workshop;
+import com.smit_test_task.backend.processor.JsonProcessor;
+import com.smit_test_task.backend.processor.XmlProcessor;
 
 public class GetSlotsRequest {
 
-    private final String workshopApiUrl;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public GetSlotsRequest(String workshopApiUrl) {
-        this.workshopApiUrl = workshopApiUrl;
+    private URI buildUri(String apiUrl, Date from, Date to) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Map<String, String> params = new HashMap<String, String>();
+        if (from == null) {
+            Date today = new Date();
+            String fromDateString = formatter.format(today);
+            params.put("from", fromDateString);
+        } else {
+            String fromDateString = formatter.format(from);
+            params.put("from", fromDateString);
+        }
+        if (to != null) {
+            String toDateString = formatter.format(to);
+            params.put("to", toDateString);
+        }
+        URI uri = UriComponentsBuilder.fromUriString(apiUrl)
+                .buildAndExpand(params)
+                .toUri();
+        return uri;
     }
 
-    public List<Slot> getAvailableSlots() throws Exception {
-        ResponseEntity<String> response = restTemplate.getForEntity(workshopApiUrl, String.class);
-
+    public List<Slot> getAvailableSlots(Workshop workshop, Date from, Date to) throws Exception {
+        URI uri = this.buildUri(workshop.getApiUrl(), from, to);
+        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
         String responseBody = response.getBody();
-
-        // List<Slot> slots = JsonProcessor.processXml(responseBody);
-        // or
-        List<Slot> slots = XmlProcessor.processXml(responseBody);
-
+        List<Slot> slots = new ArrayList<>();
+        switch (workshop.getContentType()) {
+            case "application/json":
+                slots = JsonProcessor.processJson(responseBody);
+                break;
+            case "text/xml":
+                slots = XmlProcessor.processXml(responseBody);
+                break;
+        }
         return slots;
     }
 }

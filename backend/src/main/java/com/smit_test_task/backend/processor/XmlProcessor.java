@@ -1,4 +1,4 @@
-package com.smit_test_task.backend.processors;
+package com.smit_test_task.backend.processor;
 
 import java.util.ArrayList;
 import java.util.List;

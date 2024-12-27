@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 // import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @RestController
-public class Bookings {
+public class BookingsController {
   // @RequestMapping(value = "/bookings", method = RequestMethod.POST)
   // @ResponseBody
   // public HttpResponse<?> book() throws IOException, InterruptedException {

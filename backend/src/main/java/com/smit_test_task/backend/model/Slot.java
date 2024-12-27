@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Slot {
+public class Slot<T> {
 
     @JsonProperty("id")
-    private String ID;
+    private T ID;
 
     @JsonProperty("time")
     private String time;
@@ -18,13 +18,7 @@ public class Slot {
     @JsonProperty("available")
     private Boolean available;
 
-    public Slot() {
-    }
-
-    // public Slot(T ID, String time, Boolean available) {
-    // this.ID = ID;
-    // this.time = time;
-    // this.available = available;
+    // public Slot() {
     // }
 
 }

@@ -6,7 +6,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
-public class Workshops {
+public class WorkshopsController {
+    // private final WorkshopsController workshops;
+
+    // public WorkshopsController(WorkshopsController workshops) {
+    // this.workshops = workshops;
+    // }
+
     @RequestMapping(value = "/workshops", method = RequestMethod.GET)
     @ResponseBody
     public String getWorkshops() {

@@ -1,16 +1,17 @@
 workshops:
-  - id: 1
-    name: London
-    address: 1A Gunton Rd, London
-    vehicleTypes:
-      - Car
-    apiUrl: http://localhost:9004/api/v2/tire-change-times
-    contentType: application/json
-  - id: 2
-    name: Manchester
-    address: 14 Bury New Rd, Manchester
-    vehicleTypes:
-      - Car
-      - Truck
-    apiUrl: http://localhost:9003/api/v1/tire-change-times
-    contentType: text/xml
+  list:
+    - id: 1
+      name: London
+      address: 1A Gunton Rd, London
+      vehicleTypes:
+        - Car
+      apiUrl: http://localhost:9004/api/v2/tire-change-times?from={from} #&page={page}&amount={amount}
+      contentType: application/json
+    - id: 2
+      name: Manchester
+      address: 14 Bury New Rd, Manchester
+      vehicleTypes:
+        - Car
+        - Truck
+      apiUrl: http://localhost:9003/api/v1/tire-change-times?from={from}&until={to}
+      contentType: text/xml

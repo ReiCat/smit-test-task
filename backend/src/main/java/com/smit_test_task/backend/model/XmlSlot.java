@@ -5,13 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-// <tireChangeTimesResponse>
-//   <availableTime>
-//     <uuid>c7ad2860-6119-4fc1-8341-58ae09adaedb</uuid>
-//     <time>2024-12-19T06:00:00Z</time>
-//   </availableTime>
-// </tireChangeTimesResponse>
-
 public class XmlSlot {
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "availableTime")

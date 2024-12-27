@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Booking<T> {
+public class Booking {
 
     @JsonProperty("id")
     private Integer ID;
