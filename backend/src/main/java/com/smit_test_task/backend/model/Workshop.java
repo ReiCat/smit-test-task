@@ -1,5 +1,6 @@
 package com.smit_test_task.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -18,9 +19,11 @@ public class Workshop {
     @JsonProperty("address")
     private String address;
 
+    @JsonIgnore
     @JsonProperty("apiUrl")
     private String apiUrl;
 
+    @JsonIgnore
     @JsonProperty("contentType")
     private String contentType;
 
