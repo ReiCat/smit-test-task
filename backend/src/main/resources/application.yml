@@ -13,5 +13,5 @@ workshops:
       vehicleTypes:
         - Car
         - Truck
-      apiUrl: http://localhost:9003/api/v1/tire-change-times?from={from}&until={to}
+      apiUrl: http://localhost:9003/api/v1/tire-change-times/available?from={from}&until={to}
       contentType: text/xml

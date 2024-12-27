@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.XmlSlot;
+import com.smit_test_task.backend.model.XmlSlot.AvailableTime;
 
 public class XmlProcessor {
     public static List<Slot> processXml(String xmlPayload) throws Exception {
@@ -14,12 +15,16 @@ public class XmlProcessor {
         XmlSlot xmlSlots = xmlMapper.readValue(xmlPayload, XmlSlot.class);
 
         List<Slot> slots = new ArrayList<>();
-        for (XmlSlot.AvailableTime xmlSlot : xmlSlots.getAvailableTimes()) {
-            Slot slot = new Slot();
-            slot.setAvailable(true);
-            slot.setID(xmlSlot.getUuid());
-            slot.setTime(xmlSlot.getTime());
-            slots.add(slot);
+
+        List<AvailableTime> availableTimes = xmlSlots.getAvailableTimes();
+        if (availableTimes != null) {
+            for (XmlSlot.AvailableTime availableTime : availableTimes) {
+                Slot slot = new Slot();
+                slot.setAvailable(true);
+                slot.setID(availableTime.getUuid());
+                slot.setTime(availableTime.getTime());
+                slots.add(slot);
+            }
         }
 
         return slots;

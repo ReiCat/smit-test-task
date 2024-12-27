@@ -3,6 +3,8 @@ package com.smit_test_task.backend.request;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,18 +26,16 @@ public class GetSlotsRequest {
     private URI buildUri(String apiUrl, Date from, Date to) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, String> params = new HashMap<String, String>();
-        if (from == null) {
-            Date today = new Date();
-            String fromDateString = formatter.format(today);
-            params.put("from", fromDateString);
-        } else {
-            String fromDateString = formatter.format(from);
-            params.put("from", fromDateString);
-        }
-        if (to != null) {
-            String toDateString = formatter.format(to);
-            params.put("to", toDateString);
-        }
+
+        Date today = new Date();
+        String todayString = formatter.format(today);
+
+        String fromDateString = (from != null) ? formatter.format(from) : todayString;
+        params.put("from", fromDateString);
+
+        String toDateString = (to != null) ? formatter.format(to) : todayString;
+        params.put("to", toDateString);
+
         URI uri = UriComponentsBuilder.fromUriString(apiUrl)
                 .buildAndExpand(params)
                 .toUri();
