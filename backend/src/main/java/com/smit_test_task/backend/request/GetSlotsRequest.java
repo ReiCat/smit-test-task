@@ -11,9 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.InvalidUrlException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
 import com.smit_test_task.backend.processor.JsonProcessor;
@@ -23,7 +27,7 @@ public class GetSlotsRequest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private URI buildUri(String apiUrl, Date from, Date to) {
+    private URI buildUri(String apiUrl, Date from, Date to) throws InvalidUrlException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, String> params = new HashMap<String, String>();
 
@@ -42,10 +46,13 @@ public class GetSlotsRequest {
         return uri;
     }
 
-    public List<Slot> getAvailableSlots(Workshop workshop, Date from, Date to) throws Exception {
+    public List<Slot> getAvailableSlots(Workshop workshop, Date from, Date to)
+            throws InvalidUrlException, RestClientException, JsonProcessingException, JsonMappingException {
         URI uri = this.buildUri(workshop.getApiUrl(), from, to);
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        // System.out.println(response);
         String responseBody = response.getBody();
+        responseBody = "dfghdfghdfgh";
         List<Slot> slots = new ArrayList<>();
         switch (workshop.getContentType()) {
             case "application/json":
