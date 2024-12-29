@@ -23,7 +23,7 @@ import com.smit_test_task.backend.model.Workshop;
 import com.smit_test_task.backend.processor.JsonProcessor;
 import com.smit_test_task.backend.processor.XmlProcessor;
 
-public class GetSlotsRequest {
+public class SlotsRequest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -46,13 +46,13 @@ public class GetSlotsRequest {
         return uri;
     }
 
-    public List<Slot> getAvailableSlots(Workshop workshop, Date from, Date to)
+    public List<Slot> getAvailableSlots(Workshop workshop, String vehicleType, Date from, Date to)
             throws InvalidUrlException, RestClientException, JsonProcessingException, JsonMappingException {
-        URI uri = this.buildUri(workshop.getApiUrl(), from, to);
+        Map<String, String> workshopPaths = workshop.getPaths();
+        String apiUrl = workshop.getUrl() + workshop.getApiPrefix() + workshopPaths.get("getSlots");
+        URI uri = this.buildUri(apiUrl, from, to);
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
-        // System.out.println(response);
         String responseBody = response.getBody();
-        responseBody = "dfghdfghdfgh";
         List<Slot> slots = new ArrayList<>();
         switch (workshop.getContentType()) {
             case "application/json":
@@ -63,5 +63,9 @@ public class GetSlotsRequest {
                 break;
         }
         return slots;
+    }
+
+    public String bookSlot() {
+        return "";
     }
 }

@@ -18,7 +18,4 @@ public class Slot<T> {
     @JsonProperty("available")
     private Boolean available;
 
-    // public Slot() {
-    // }
-
 }

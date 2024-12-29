@@ -5,7 +5,11 @@ workshops:
       address: 1A Gunton Rd, London
       vehicleTypes:
         - Car
-      apiUrl: http://localhost:9004/api/v2/tire-change-times?from={from} #&page={page}&amount={amount}
+      url: http://localhost:9004
+      apiPrefix: /api/v2
+      paths:
+        getSlots: /tire-change-times?from={from} #&page={page}&amount={amount}
+        bookSlot: http://localhost:9004/api/v2/tire-change-times/{id}/booking
       contentType: application/json
     - id: 2
       name: Manchester
@@ -13,5 +17,9 @@ workshops:
       vehicleTypes:
         - Car
         - Truck
-      apiUrl: http://localhost:9003/api/v1/tire-change-times/available?from={from}&until={to}
+      url: http://localhost:9003
+      apiPrefix: /api/v1
+      paths:
+        getSlots: /tire-change-times/available?from={from}&until={to}
+        bookSlot: /tire-change-times/{uuid}/booking
       contentType: text/xml

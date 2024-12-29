@@ -1,5 +1,7 @@
 package com.smit_test_task.backend.model;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,9 +21,20 @@ public class Workshop {
     @JsonProperty("address")
     private String address;
 
+    @JsonProperty("vehicleTypes")
+    private String[] vehicleTypes;
+
     @JsonIgnore
-    @JsonProperty("apiUrl")
-    private String apiUrl;
+    @JsonProperty("url")
+    private String url;
+
+    @JsonIgnore
+    @JsonProperty("apiPrefix")
+    private String apiPrefix;
+
+    @JsonIgnore
+    @JsonProperty("paths")
+    private Map<String, String> paths;
 
     @JsonIgnore
     @JsonProperty("contentType")

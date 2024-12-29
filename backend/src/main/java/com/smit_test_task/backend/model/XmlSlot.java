@@ -24,7 +24,6 @@ public class XmlSlot {
         @JacksonXmlProperty(localName = "uuid")
         private String uuid;
 
-        // Геттеры и сеттеры
         public String getTime() {
             return time;
         }

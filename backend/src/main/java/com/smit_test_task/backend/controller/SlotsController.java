@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.config.Workshops;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
-import com.smit_test_task.backend.request.GetSlotsRequest;
+import com.smit_test_task.backend.request.SlotsRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,7 +35,7 @@ public class SlotsController {
     @Autowired
     private Workshops workshops;
 
-    GetSlotsRequest request = new GetSlotsRequest();
+    SlotsRequest request = new SlotsRequest();
 
     @RequestMapping(value = "/workshops/slots", method = RequestMethod.GET, produces = { "application/json" })
     @ResponseBody
@@ -52,7 +52,7 @@ public class SlotsController {
         }
 
         try {
-            slots = this.request.getAvailableSlots(workshop, from, to);
+            slots = this.request.getAvailableSlots(workshop, vehicleType, from, to);
         } catch (InvalidUrlException | RestClientException | JacksonException e) {
             if (e.getMessage().contains("Connection refused")) {
                 throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
@@ -64,4 +64,5 @@ public class SlotsController {
 
         return slots;
     }
+
 }
