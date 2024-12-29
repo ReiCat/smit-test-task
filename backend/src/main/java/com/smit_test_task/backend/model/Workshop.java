@@ -34,7 +34,7 @@ public class Workshop {
 
     @JsonIgnore
     @JsonProperty("paths")
-    private Map<String, String> paths;
+    private Map<String, Path> paths;
 
     @JsonIgnore
     @JsonProperty("contentType")

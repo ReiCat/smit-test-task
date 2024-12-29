@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.smit_test_task.backend.model.Path;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
 import com.smit_test_task.backend.processor.JsonProcessor;
@@ -48,8 +49,9 @@ public class SlotsRequest {
 
     public List<Slot> getAvailableSlots(Workshop workshop, String vehicleType, Date from, Date to)
             throws InvalidUrlException, RestClientException, JsonProcessingException, JsonMappingException {
-        Map<String, String> workshopPaths = workshop.getPaths();
-        String apiUrl = workshop.getUrl() + workshop.getApiPrefix() + workshopPaths.get("getSlots");
+        Map<String, Path> workshopPaths = workshop.getPaths();
+        Path slotsPath = workshopPaths.get("getSlots");
+        String apiUrl = workshop.getUrl() + workshop.getApiPrefix() + slotsPath.path;
         URI uri = this.buildUri(apiUrl, from, to);
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
         String responseBody = response.getBody();

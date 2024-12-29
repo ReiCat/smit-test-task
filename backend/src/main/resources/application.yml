@@ -8,8 +8,12 @@ workshops:
       url: http://localhost:9004
       apiPrefix: /api/v2
       paths:
-        getSlots: /tire-change-times?from={from} #&page={page}&amount={amount}
-        bookSlot: http://localhost:9004/api/v2/tire-change-times/{id}/booking
+        getSlots: 
+          path: /tire-change-times?from={from} #&page={page}&amount={amount}
+          method: GET
+        bookSlot: 
+          path: /tire-change-times/{id}/booking
+          method: POST
       contentType: application/json
     - id: 2
       name: Manchester
@@ -20,6 +24,10 @@ workshops:
       url: http://localhost:9003
       apiPrefix: /api/v1
       paths:
-        getSlots: /tire-change-times/available?from={from}&until={to}
-        bookSlot: /tire-change-times/{uuid}/booking
+        getSlots: 
+          path: /tire-change-times/available?from={from}&until={to}
+          method: GET
+        bookSlot: 
+          path: /tire-change-times/{uuid}/booking
+          method: PUT
       contentType: text/xml
