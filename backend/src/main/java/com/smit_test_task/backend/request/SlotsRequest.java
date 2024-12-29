@@ -41,10 +41,10 @@ public class SlotsRequest {
         String toDateString = (to != null) ? formatter.format(to) : todayString;
         params.put("to", toDateString);
 
-        URI uri = UriComponentsBuilder.fromUriString(apiUrl)
+        URI url = UriComponentsBuilder.fromUriString(apiUrl)
                 .buildAndExpand(params)
                 .toUri();
-        return uri;
+        return url;
     }
 
     public List<Slot> getAvailableSlots(Workshop workshop, String vehicleType, Date from, Date to)
@@ -52,22 +52,19 @@ public class SlotsRequest {
         Map<String, Path> workshopPaths = workshop.getPaths();
         Path slotsPath = workshopPaths.get("getSlots");
         String apiUrl = workshop.getUrl() + workshop.getApiPrefix() + slotsPath.path;
-        URI uri = this.buildUri(apiUrl, from, to);
-        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        URI url = this.buildUri(apiUrl, from, to);
+        ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
         String responseBody = response.getBody();
         List<Slot> slots = new ArrayList<>();
         switch (workshop.getContentType()) {
             case "application/json":
-                slots = JsonProcessor.processJson(responseBody);
+                slots = JsonProcessor.processSlotsJson(responseBody);
                 break;
             case "text/xml":
-                slots = XmlProcessor.processXml(responseBody);
+                slots = XmlProcessor.processSlotsXml(responseBody);
                 break;
         }
         return slots;
     }
 
-    public String bookSlot() {
-        return "";
-    }
 }

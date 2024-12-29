@@ -1,8 +1,8 @@
 package com.smit_test_task.backend.enumerate;
 
 public enum VehicleType {
-    CAR("Car"),
-    TRUCK("Truck");
+    Car("Car"),
+    Truck("Truck");
 
     private final String vehicleType;
 

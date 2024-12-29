@@ -28,6 +28,6 @@ workshops:
           path: /tire-change-times/available?from={from}&until={to}
           method: GET
         bookSlot: 
-          path: /tire-change-times/{uuid}/booking
+          path: /tire-change-times/{id}/booking
           method: PUT
       contentType: text/xml
