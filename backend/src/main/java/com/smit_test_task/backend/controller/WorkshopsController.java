@@ -97,9 +97,6 @@ public class WorkshopsController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
         }
 
-        // Slot slot = this.bookingRequest.bookSlot(workshop, booking);
-        // return ResponseEntity.ok(slot);
-
         try {
             Slot slot = this.bookingRequest.bookSlot(workshop, booking);
             return ResponseEntity.ok(slot);
