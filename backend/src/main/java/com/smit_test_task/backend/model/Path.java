@@ -8,5 +8,6 @@ import lombok.Setter;
 public class Path {
     public String path;
     public String method;
+    public String dynamicRootName;
 
 }

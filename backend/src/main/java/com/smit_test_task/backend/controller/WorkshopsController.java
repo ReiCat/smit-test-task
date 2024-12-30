@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.InvalidUrlException;
 
 import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.config.Workshops;
 import com.smit_test_task.backend.model.Booking;
 import com.smit_test_task.backend.model.ErrorMessage;
@@ -71,8 +72,11 @@ public class WorkshopsController {
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
                     "Could not connect to the workshop. Please try again later.", e);
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (HttpClientErrorException e) {
-            ErrorMessage error = this.errorProcessor.processJsonError(e.getResponseBodyAsString());
+            ErrorMessage error = this.errorProcessor.processError(
+                    workshop.getContentType(), e.getResponseBodyAsString());
             switch (Integer.parseInt(error.code)) {
                 case 400:
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.message);
@@ -93,23 +97,31 @@ public class WorkshopsController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
         }
 
+        // Slot slot = this.bookingRequest.bookSlot(workshop, booking);
+        // return ResponseEntity.ok(slot);
+
         try {
             Slot slot = this.bookingRequest.bookSlot(workshop, booking);
             return ResponseEntity.ok(slot);
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
                     "Could not connect to the workshop. Please try again later.", e);
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (HttpClientErrorException e) {
-            ErrorMessage error = this.errorProcessor.processJsonError(e.getResponseBodyAsString());
+            ErrorMessage error = this.errorProcessor.processError(
+                    workshop.getContentType(), e.getResponseBodyAsString());
             switch (Integer.parseInt(error.code)) {
                 case 400:
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.message);
 
                 case 422:
-                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, error.message);
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                            error.message);
 
                 case 500:
-                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, error.message);
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                            error.message);
             }
             return null;
         }

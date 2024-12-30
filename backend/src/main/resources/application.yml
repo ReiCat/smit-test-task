@@ -1,10 +1,11 @@
 workshops:
   list:
     - id: 1
-      name: London
-      address: 1A Gunton Rd, London
+      name: Manchester
+      address: 14 Bury New Rd, Manchester
       vehicleTypes:
         - Car
+        - Truck
       url: http://localhost:9004
       apiPrefix: /api/v2
       paths:
@@ -16,11 +17,10 @@ workshops:
           method: POST
       contentType: application/json
     - id: 2
-      name: Manchester
-      address: 14 Bury New Rd, Manchester
+      name: London
+      address: 1A Gunton Rd, London
       vehicleTypes:
         - Car
-        - Truck
       url: http://localhost:9003
       apiPrefix: /api/v1
       paths:
@@ -30,4 +30,5 @@ workshops:
         bookSlot: 
           path: /tire-change-times/{id}/booking
           method: PUT
+          dynamicRootName: london.tireChangeBookingRequest
       contentType: text/xml
