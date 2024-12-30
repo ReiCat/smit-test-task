@@ -50,10 +50,7 @@ public class BookingRequest {
                 ObjectMapper objectMapper = new ObjectMapper();
                 contactInformation.contactInformation = booking.getContactInformation();
                 String contactInformationAsString = objectMapper.writeValueAsString(contactInformation);
-                System.out.printf("XXXXXXXXXXXXXX: %s\n", contactInformationAsString);
-
                 Slot result = this.restTemplate.postForObject(url, contactInformationAsString, Slot.class);
-                System.out.println(result);
                 return result;
             // case "text/xml":
             // slots = XmlProcessor.processXml(responseBody);
