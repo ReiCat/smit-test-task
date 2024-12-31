@@ -1,5 +1,3 @@
-import { VEHICLE_TYPES } from "../../constants/constants"
-
 export default class Booking {
   id: string = "";
   workshopID: string = "";

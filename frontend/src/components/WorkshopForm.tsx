@@ -22,6 +22,7 @@ export type Option = {
 };
 
 interface WorkshopFormProps {
+  setError: Function;
   workshops: Workshop[];
   vehicleTypes: string[];
   selectedVehicleType: string;
@@ -41,17 +42,22 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
 
   const bookingForm = useFormik({
     initialValues: {
-      id: "1",
-      workshopID: "",
-      contactInformation: "",
+      selectedVehicleType: props.selectedVehicleType,
+      workshopID: props.selectedWorkshopID,
+      dateFrom: props.dateFrom,
+      dateTo: props.dateTo,
     },
-    // validationSchema: Yup.object({}),
-    onSubmit: async (values) => {
-      const newBookingSlot = new Booking();
-      newBookingSlot.id = values.id;
-      newBookingSlot.workshopID = values.workshopID;
-      newBookingSlot.contactInformation = values.contactInformation;
-    },
+    validationSchema: Yup.object({
+      dateFrom: Yup.date().min(
+        new Date(new Date().getTime() - 86400000),
+        "Date to must be later than today."
+      ),
+      dateTo: Yup.date().min(
+        new Date(new Date().getTime() - 86400000),
+        "Date to must be later than today."
+      ),
+    }),
+    onSubmit: async (values) => {},
   });
 
   useEffect(() => {
@@ -79,6 +85,16 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
     }
   }, [availableWorkshops]);
 
+  useEffect(() => {
+    const dateFrom = new Date(props.dateFrom);
+    const dateTo = new Date(props.dateTo);
+    if (dateTo < dateFrom) {
+      props.setError("Date to could not be earlier than date from.");
+    } else {
+      props.setError("");
+    }
+  }, [props.dateFrom, props.dateTo]);
+
   const handleVehicleTypeSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     props.setSelectedVehicleType(e.target.value);
   };
@@ -91,14 +107,16 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
 
   const handleDateFromChange = (e: ChangeEvent<HTMLInputElement>) => {
     props.setDateFrom(e.target.value);
+    bookingForm.handleChange(e);
   };
 
   const handleDateToChange = (e: ChangeEvent<HTMLInputElement>) => {
     props.setDateTo(e.target.value);
+    bookingForm.handleChange(e);
   };
 
   return (
-    <Form onSubmit={bookingForm.handleSubmit}>
+    <Form>
       <Row className="mb-3">
         <Form.Group as={Col} md="6" controlId="vehicle">
           <Form.Label>Vehicle type</Form.Label>
@@ -136,20 +154,22 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
           <Form.Label>Date from</Form.Label>
           <Form.Control
             type="date"
-            name="date_from"
+            name="dateFrom"
             placeholder="Date from"
             onChange={handleDateFromChange}
             value={props.dateFrom}
+            isInvalid={!!bookingForm.errors?.dateFrom}
           />
         </Form.Group>
         <Form.Group as={Col} md="6" controlId="date_to">
           <Form.Label>Date to</Form.Label>
           <Form.Control
             type="date"
-            name="date_to"
+            name="dateTo"
             placeholder="Date to"
             onChange={handleDateToChange}
             value={props.dateTo}
+            isInvalid={!!bookingForm.errors?.dateTo}
           />
         </Form.Group>
       </Row>

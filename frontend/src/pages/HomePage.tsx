@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
-import { LinkContainer } from "react-router-bootstrap";
 import WorkshopForm from "../components/WorkshopForm";
 import { fetchWorkshops, fetchSlots } from "../services/apiSource";
 import Workshop from "../components/data/Workshop";
 import Slot from "../components/data/Slot";
-
-import { LINK_PATHS } from "../constants/paths";
 import { VEHICLE_TYPES } from "../constants/constants";
 
 interface HomePageProps {}
@@ -63,6 +60,7 @@ const HomePage: React.FC<HomePageProps> = (
   return (
     <>
       <WorkshopForm
+        setError={setError}
         workshops={workshops}
         vehicleTypes={vehicleTypes}
         selectedVehicleType={selectedVehicleType}
@@ -74,7 +72,7 @@ const HomePage: React.FC<HomePageProps> = (
         dateTo={dateTo}
         setDateTo={setDateTo}
       />
-      {error !== "" ? (
+      {error !== "" && error !== undefined ? (
         <Alert className="mt-3">
           <b>{error}</b>
         </Alert>

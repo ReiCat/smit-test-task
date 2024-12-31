@@ -1,5 +1,4 @@
 import { FunctionComponent } from "react";
-import { LINK_PATHS } from "../constants/paths";
 import { useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 
