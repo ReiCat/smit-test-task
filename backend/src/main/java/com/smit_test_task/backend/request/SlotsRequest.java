@@ -45,7 +45,7 @@ public class SlotsRequest {
         return url;
     }
 
-    public List<Slot> getAvailableSlots(Workshop workshop, String vehicleType, Date from, Date to)
+    public List<Slot> getAvailableSlots(Workshop workshop, Date from, Date to)
             throws InvalidUrlException, RestClientException, JsonProcessingException, JsonMappingException {
         Map<String, Path> workshopPaths = workshop.getPaths();
         Path slotsPath = workshopPaths.get("getSlots");

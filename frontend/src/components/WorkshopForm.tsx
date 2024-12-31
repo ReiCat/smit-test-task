@@ -103,7 +103,7 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
         <Form.Group as={Col} md="6" controlId="vehicle">
           <Form.Label>Vehicle type</Form.Label>
           <Form.Select required onChange={handleVehicleTypeSelectChange}>
-            {props.vehicleTypes.map((vehicleType, index) => {
+            {props.vehicleTypes.map((vehicleType) => {
               return (
                 <option
                   value={vehicleType}
@@ -118,7 +118,7 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
         <Form.Group as={Col} md="6" controlId="workshop">
           <Form.Label>Workshop</Form.Label>
           <Form.Select required onChange={handleWorkshopSelectChange}>
-            {availableWorkshops.map((workshop, index) => {
+            {availableWorkshops.map((workshop) => {
               return (
                 <option
                   id={workshop.id}

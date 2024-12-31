@@ -32,9 +32,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static com.smit_test_task.backend.config.WebMvcConfig.API_V1_PREFIX;
+
 @RestController
 @RestControllerAdvice
-@RequestMapping(value = "/workshops")
+@RequestMapping(value = API_V1_PREFIX + "/workshops")
 public class WorkshopsController {
 
     @Autowired
@@ -58,8 +60,7 @@ public class WorkshopsController {
     public ResponseEntity<List<Slot>> getSlots(
             @RequestParam(value = "workshopID", defaultValue = "") Integer workshopID,
             @RequestParam(value = "from", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
-            @RequestParam(value = "to", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to,
-            @RequestParam(value = "vehicleType", defaultValue = "") String vehicleType)
+            @RequestParam(value = "to", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to)
             throws InvalidUrlException, RestClientException, JacksonException {
         Workshop workshop = workshops.getWorkshopByID(workshopID);
         if (workshop == null) {
@@ -67,7 +68,7 @@ public class WorkshopsController {
         }
 
         try {
-            List<Slot> slots = this.slotsRequest.getAvailableSlots(workshop, vehicleType, from, to);
+            List<Slot> slots = this.slotsRequest.getAvailableSlots(workshop, from, to);
             return ResponseEntity.ok(slots);
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
