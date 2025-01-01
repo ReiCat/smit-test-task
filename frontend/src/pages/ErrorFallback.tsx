@@ -1,17 +1,11 @@
 import { FunctionComponent } from "react";
-import { useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 
 interface ErrorFallbackProps {
   error: any;
-  resetErrorBoundary: any;
 }
 
-const ErrorFallback: FunctionComponent<ErrorFallbackProps> = ({
-  error,
-  resetErrorBoundary,
-}) => {
-  const navigate = useNavigate();
+const ErrorFallback: FunctionComponent<ErrorFallbackProps> = ({ error }) => {
   if (error.isAxiosError) {
     switch (error.response.status) {
       case 403:
@@ -31,7 +25,7 @@ const ErrorFallback: FunctionComponent<ErrorFallbackProps> = ({
     }
   }
 
-  return <>default return</>;
+  return <>Error has appeared</>;
 };
 
 export default ErrorFallback;

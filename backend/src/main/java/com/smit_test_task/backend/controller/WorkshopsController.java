@@ -113,6 +113,7 @@ public class WorkshopsController {
                 case 400:
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.message);
 
+                case 22:
                 case 422:
                     throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                             error.message);

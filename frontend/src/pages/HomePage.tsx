@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import WorkshopForm from "../components/WorkshopForm";
+import BookSlotForm from "../components/BookSlotForm";
 import { fetchWorkshops, fetchSlots } from "../services/apiSource";
 import Workshop from "../components/data/Workshop";
 import Slot from "../components/data/Slot";
@@ -19,16 +21,26 @@ const HomePage: React.FC<HomePageProps> = (
   const [vehicleTypes, setVehicleTypes] = useState<string[]>([]);
   const [selectedVehicleType, setSelectedVehicleType] = useState<string>("");
   const [selectedWorkshopID, setSelectedWorkshopID] = useState<string>("");
+  const [selectedWorkshop, setSelectedWorkshop] = useState<Workshop>();
+  const [selectedSlotTimeAvailable, setSelectedSlotTimeAvailable] =
+    useState<string>("");
+  const [selectedSlotID, setSelectedSlotID] = useState<string>("");
   const [dateFrom, setDateFrom] = useState<string>("");
   const [dateTo, setDateTo] = useState<string>("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     fetchWorkshops()
       .then((workshopEntries) => {
         setWorkshops(workshopEntries);
+        setError("");
       })
       .catch((err) => {
-        setError(err.response.data.message);
+        setError(err.response.statusText);
+        setWorkshops([]);
       });
   }, []);
 
@@ -51,11 +63,28 @@ const HomePage: React.FC<HomePageProps> = (
     fetchSlots(selectedWorkshopID, dateFrom, dateTo)
       .then((slotEntries) => {
         setSlots(slotEntries);
+        setError("");
       })
       .catch((err) => {
-        setError(err.response.data.message);
+        setError(err.response.statusText);
+        setSlots([]);
       });
   }, [selectedVehicleType, selectedWorkshopID, dateFrom, dateTo]);
+
+  const openModalWithData = (
+    selectedWorkshopID: string,
+    slotID: string,
+    timeAvailable: string
+  ) => {
+    setSelectedWorkshop(
+      workshops.find(
+        (workshop) => parseInt(workshop.id) === parseInt(selectedWorkshopID)
+      )
+    );
+    setSelectedSlotID(slotID);
+    setSelectedSlotTimeAvailable(timeAvailable);
+    handleShow();
+  };
 
   return (
     <>
@@ -90,7 +119,22 @@ const HomePage: React.FC<HomePageProps> = (
               return (
                 <tr key={slot.id}>
                   <td>{slot.time}</td>
-                  <td>{slot.available}</td>
+                  <td>
+                    <div className="d-flex justify-content-center mt-3">
+                      <Button
+                        variant="primary"
+                        onClick={() =>
+                          openModalWithData(
+                            selectedWorkshopID,
+                            slot.id,
+                            slot.time
+                          )
+                        }
+                      >
+                        Book slot
+                      </Button>
+                    </div>
+                  </td>
                 </tr>
               );
             })}
@@ -101,6 +145,25 @@ const HomePage: React.FC<HomePageProps> = (
           <b>No slots found</b>
         </Alert>
       )}
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Book slot</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {success === true ? (
+            <Alert variant="success">
+              <Alert.Heading>Success!</Alert.Heading>
+            </Alert>
+          ) : (
+            <BookSlotForm
+              workshop={selectedWorkshop!}
+              slotID={selectedSlotID}
+              timeAvailable={selectedSlotTimeAvailable}
+              setSuccess={setSuccess}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

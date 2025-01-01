@@ -4,7 +4,6 @@ import React, {
   useEffect,
   ChangeEvent,
 } from "react";
-import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -13,9 +12,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import Workshop from "../components/data/Workshop";
-import Booking from "../components/data/Booking";
 import { contains } from "../utils/utils";
-import { filter } from "lodash";
 
 export type Option = {
   [value: string]: any;

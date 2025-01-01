@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Setter
 public class Slot<T> {
 
+    @JsonIgnore
     private String desiredPatternFormat = "yyyy-MM-dd HH:mm";
 
     @JsonProperty("id")
