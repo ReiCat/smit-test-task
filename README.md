@@ -1,2 +1,7 @@
-# smit_test_task
-SMIT test task
+# SMIT test task
+
+The project is done based on:
+Gradle: 8.11.1
+Java: 21.0.5
+npm: 8.19.2
+node: 19.0.0
