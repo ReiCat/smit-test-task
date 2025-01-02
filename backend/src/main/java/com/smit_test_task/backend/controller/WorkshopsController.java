@@ -63,6 +63,7 @@ public class WorkshopsController {
             @RequestParam(value = "from", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
             @RequestParam(value = "to", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to)
             throws InvalidUrlException, RestClientException, JacksonException {
+
         Workshop workshop = workshops.getWorkshopByID(workshopID);
         if (workshop == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
@@ -88,6 +89,7 @@ public class WorkshopsController {
                 case 500:
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, error.message);
             }
+
             return null;
         }
     }
@@ -96,6 +98,7 @@ public class WorkshopsController {
     @ResponseBody
     public ResponseEntity<Slot> book(@RequestBody Booking booking)
             throws InvalidUrlException, RestClientException, JacksonException {
+
         Workshop workshop = workshops.getWorkshopByID(booking.getWorkshopID());
         if (workshop == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
@@ -125,6 +128,7 @@ public class WorkshopsController {
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                             error.message);
             }
+
             return null;
         }
     }

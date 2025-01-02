@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smit_test_task.backend.model.ErrorMessage;
 
 public class ErrorProcessor {
+
     ObjectMapper jsonMapper = new ObjectMapper();
+
     ObjectMapper xmlMapper = new XmlMapper();
 
     public ErrorMessage processJsonError(String jsonPayload) throws JsonProcessingException, JsonMappingException {

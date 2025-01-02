@@ -1,6 +1,7 @@
 package com.smit_test_task.backend.enumerate;
 
 public enum Status {
+
     CONFIRMED("Confirmed"),
     CANCELLED("Cancelled");
 

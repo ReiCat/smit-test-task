@@ -1,6 +1,7 @@
 package com.smit_test_task.backend.enumerate;
 
 public enum VehicleType {
+
     Car("Car"),
     Truck("Truck");
 
@@ -18,4 +19,5 @@ public enum VehicleType {
     public String toString() {
         return getVehicleType();
     }
+
 }

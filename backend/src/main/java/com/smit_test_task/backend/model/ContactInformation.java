@@ -9,5 +9,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Setter
 @JacksonXmlRootElement
 public class ContactInformation {
+
     public String contactInformation;
+
 }

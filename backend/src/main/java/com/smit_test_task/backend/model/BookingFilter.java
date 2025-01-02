@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingFilter {
+
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
     private Integer page;
@@ -46,4 +47,5 @@ public class BookingFilter {
             this.amount = (int) (long) hours;
         }
     }
+
 }

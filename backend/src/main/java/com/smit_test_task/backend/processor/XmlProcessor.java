@@ -11,7 +11,9 @@ import com.smit_test_task.backend.model.XmlSlot;
 import com.smit_test_task.backend.model.XmlSlot.AvailableTime;
 
 public class XmlProcessor {
+
     public static List<Slot> processSlotsXml(String xmlPayload) throws JsonProcessingException, JsonMappingException {
+
         XmlMapper xmlMapper = new XmlMapper();
 
         XmlSlot xmlSlots = xmlMapper.readValue(xmlPayload, XmlSlot.class);

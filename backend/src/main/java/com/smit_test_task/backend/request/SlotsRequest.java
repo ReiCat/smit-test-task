@@ -28,6 +28,7 @@ public class SlotsRequest {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private URI apiV1(String apiUrl, BookingFilter filter) throws InvalidUrlException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, String> params = new HashMap<String, String>();
 
@@ -42,10 +43,13 @@ public class SlotsRequest {
         URI url = UriComponentsBuilder.fromUriString(apiUrl)
                 .buildAndExpand(params)
                 .toUri();
+
         return url;
+
     }
 
     private URI apiV2(String apiUrl, BookingFilter filter) throws InvalidUrlException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, String> params = new HashMap<String, String>();
 
@@ -62,11 +66,14 @@ public class SlotsRequest {
         URI url = UriComponentsBuilder.fromUriString(apiUrl)
                 .buildAndExpand(params)
                 .toUri();
+
         return url;
+
     }
 
     private URI getFormattedUrl(String apiUrl, String apiPrefix, BookingFilter filter)
             throws InvalidUrlException, IllegalArgumentException {
+
         if ("/api/v1".equals(apiPrefix)) {
             return this.apiV1(apiUrl, filter);
         } else if ("/api/v2".equals(apiPrefix)) {
@@ -74,16 +81,23 @@ public class SlotsRequest {
         } else {
             throw new IllegalArgumentException("Unknown API type");
         }
+
     }
 
     public List<Slot> getAvailableSlots(Workshop workshop, BookingFilter filter)
             throws InvalidUrlException, IllegalArgumentException, RestClientException, JsonProcessingException,
             JsonMappingException {
+
         Map<String, Path> workshopPaths = workshop.getPaths();
+
         Path slotsPath = workshopPaths.get("getSlots");
+
         String apiPrefix = workshop.getApiPrefix();
+
         String apiUrl = workshop.getUrl() + apiPrefix + slotsPath.path;
+
         URI url = getFormattedUrl(apiUrl, apiPrefix, filter);
+
         ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
         String responseBody = response.getBody();
         List<Slot> slots = new ArrayList<>();
@@ -95,6 +109,7 @@ public class SlotsRequest {
                 slots = XmlProcessor.processSlotsXml(responseBody);
                 break;
         }
+
         return slots;
     }
 

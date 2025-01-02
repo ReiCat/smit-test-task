@@ -11,8 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonProcessor {
 
     public static List<Slot> processSlotsJson(String jsonPayload) throws JsonProcessingException, JsonMappingException {
+
         ObjectMapper jsonMapper = new ObjectMapper();
+
         Slot[] jsonSlots = jsonMapper.readValue(jsonPayload, Slot[].class);
+
         List<Slot> slots = new ArrayList<Slot>();
         for (int i = 0; i < jsonSlots.length; i++) {
             Slot slot = jsonSlots[i];
@@ -21,6 +24,7 @@ public class JsonProcessor {
                 slots.add(slot);
             }
         }
+
         return slots;
     }
 

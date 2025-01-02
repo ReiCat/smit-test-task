@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Path {
+
     public String path;
     public String method;
     public String dynamicRootName;

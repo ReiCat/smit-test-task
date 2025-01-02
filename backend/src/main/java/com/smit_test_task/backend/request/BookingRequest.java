@@ -32,11 +32,13 @@ public class BookingRequest {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private URI buildUri(String apiUrl, String bookingID) throws InvalidUrlException {
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", bookingID.toString());
         URI url = UriComponentsBuilder.fromUriString(apiUrl)
                 .buildAndExpand(params)
                 .toUri();
+
         return url;
     }
 
@@ -51,6 +53,7 @@ public class BookingRequest {
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
         ResponseEntity<T> result = this.restTemplate.exchange(url, HttpMethod.valueOf(method),
                 entity, responseType);
+
         return result;
     }
 

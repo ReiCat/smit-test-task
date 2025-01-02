@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public class XmlSlot {
+
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "availableTime")
     private List<AvailableTime> availableTime;
@@ -40,4 +41,5 @@ public class XmlSlot {
             this.uuid = uuid;
         }
     }
+
 }

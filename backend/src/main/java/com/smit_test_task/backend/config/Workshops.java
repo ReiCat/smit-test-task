@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Workshops {
+
     private List<Workshop> list;
 
     public Workshop getWorkshopByID(Integer ID) {
