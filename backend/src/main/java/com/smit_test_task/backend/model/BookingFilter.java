@@ -1,6 +1,5 @@
 package com.smit_test_task.backend.model;
 
-import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 import java.time.Duration;

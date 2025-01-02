@@ -20,7 +20,6 @@ import com.smit_test_task.backend.processor.ErrorProcessor;
 import com.smit_test_task.backend.request.BookingRequest;
 import com.smit_test_task.backend.request.SlotsRequest;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
