@@ -10,7 +10,7 @@ workshops:
       apiPrefix: /api/v2
       paths:
         getSlots: 
-          path: /tire-change-times?from={from} #&page={page}&amount={amount}
+          path: /tire-change-times?from={from}&page={page}&amount={amount}
           method: GET
         bookSlot: 
           path: /tire-change-times/{id}/booking

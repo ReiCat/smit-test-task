@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.config.Workshops;
 import com.smit_test_task.backend.model.Booking;
+import com.smit_test_task.backend.model.BookingFilter;
 import com.smit_test_task.backend.model.ErrorMessage;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
@@ -19,6 +20,7 @@ import com.smit_test_task.backend.processor.ErrorProcessor;
 import com.smit_test_task.backend.request.BookingRequest;
 import com.smit_test_task.backend.request.SlotsRequest;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -67,8 +69,10 @@ public class WorkshopsController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
         }
 
+        BookingFilter filter = new BookingFilter(from, to);
+
         try {
-            List<Slot> slots = this.slotsRequest.getAvailableSlots(workshop, from, to);
+            List<Slot> slots = this.slotsRequest.getAvailableSlots(workshop, filter);
             return ResponseEntity.ok(slots);
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
