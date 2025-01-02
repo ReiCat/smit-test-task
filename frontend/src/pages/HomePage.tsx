@@ -30,7 +30,7 @@ const HomePage: React.FC<HomePageProps> = (
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [success, setSuccess] = useState<boolean>(false);
+  const [successTime, setSuccessTime] = useState<String>("");
 
   useEffect(() => {
     fetchWorkshops()
@@ -69,7 +69,7 @@ const HomePage: React.FC<HomePageProps> = (
         setError(err.response.statusText);
         setSlots([]);
       });
-  }, [selectedVehicleType, selectedWorkshopID, dateFrom, dateTo]);
+  }, [selectedVehicleType, selectedWorkshopID, dateFrom, dateTo, successTime]);
 
   const openModalWithData = (
     selectedWorkshopID: string,
@@ -101,6 +101,14 @@ const HomePage: React.FC<HomePageProps> = (
         dateTo={dateTo}
         setDateTo={setDateTo}
       />
+      {successTime !== "" ? (
+        <Alert variant="success">
+          <Alert.Heading>Success!</Alert.Heading>
+          <div>Slot is successfully booked!</div>
+          <div>Visit time: {successTime}</div>
+          <div>Address: {selectedWorkshop?.address}</div>
+        </Alert>
+      ) : null}
       {error !== "" && error !== undefined ? (
         <Alert className="mt-3">
           <b>{error}</b>
@@ -150,18 +158,13 @@ const HomePage: React.FC<HomePageProps> = (
           <Modal.Title>Book slot</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {success === true ? (
-            <Alert variant="success">
-              <Alert.Heading>Success!</Alert.Heading>
-            </Alert>
-          ) : (
-            <BookSlotForm
-              workshop={selectedWorkshop!}
-              slotID={selectedSlotID}
-              timeAvailable={selectedSlotTimeAvailable}
-              setSuccess={setSuccess}
-            />
-          )}
+          <BookSlotForm
+            workshop={selectedWorkshop!}
+            slotID={selectedSlotID}
+            timeAvailable={selectedSlotTimeAvailable}
+            setSuccessTime={setSuccessTime}
+            handleClose={handleClose}
+          />
         </Modal.Body>
       </Modal>
     </>

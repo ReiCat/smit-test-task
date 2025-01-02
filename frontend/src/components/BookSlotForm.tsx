@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, ChangeEvent } from "react";
+import React, {
+  FunctionComponent,
+  useState,
+  ChangeEvent,
+  useEffect,
+} from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -21,7 +26,8 @@ interface BookSlotFormProps {
   workshop: Workshop;
   slotID: string;
   timeAvailable: string;
-  setSuccess: Function;
+  setSuccessTime: Function;
+  handleClose: Function;
 }
 
 const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
@@ -46,7 +52,9 @@ const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
       booking.workshopID = values.workshopID;
       booking.contactInformation = values.contactInformation;
       bookSlot(booking)
-        .then((res: any) => props.setSuccess(true))
+        .then((res: any) => {
+          props.setSuccessTime(res["time"]);
+        })
         .catch((err) => {
           if (axios.isAxiosError(err)) {
             if (err.response !== undefined) {
@@ -58,6 +66,7 @@ const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
             setError("An unexpected error occurred");
           }
         });
+      props.handleClose();
     },
   });
 
