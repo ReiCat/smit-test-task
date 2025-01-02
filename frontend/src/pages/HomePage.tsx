@@ -159,6 +159,7 @@ const HomePage: React.FC<HomePageProps> = (
         </Modal.Header>
         <Modal.Body>
           <BookSlotForm
+            setError={setError}
             workshop={selectedWorkshop!}
             slotID={selectedSlotID}
             timeAvailable={selectedSlotTimeAvailable}

@@ -23,6 +23,7 @@ export type Option = {
 };
 
 interface BookSlotFormProps {
+  setError: Function;
   workshop: Workshop;
   slotID: string;
   timeAvailable: string;
@@ -33,7 +34,7 @@ interface BookSlotFormProps {
 const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
   props: BookSlotFormProps
 ): JSX.Element => {
-  const [error, setError] = useState<string>("");
+  // const [error, setError] = useState<string>("");
 
   const bookSlotForm = useFormik({
     initialValues: {
@@ -58,12 +59,12 @@ const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
         .catch((err) => {
           if (axios.isAxiosError(err)) {
             if (err.response !== undefined) {
-              setError(err.response.statusText);
+              props.setError(err.response.statusText);
             } else {
-              setError(err.message);
+              props.setError(err.message);
             }
           } else {
-            setError("An unexpected error occurred");
+            props.setError("An unexpected error occurred");
           }
         });
       props.handleClose();
@@ -95,11 +96,6 @@ const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
           </Button>
         </Form.Group>
       </Row>
-      {error !== "" ? (
-        <Alert className="mt-3">
-          <b>{error}</b>
-        </Alert>
-      ) : null}
     </Form>
   );
 };
