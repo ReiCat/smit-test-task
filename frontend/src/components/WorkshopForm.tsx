@@ -34,8 +34,10 @@ interface WorkshopFormProps {
 
 const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
   props: WorkshopFormProps
-): JSX.Element => {
+) => {
   const [availableWorkshops, setAvailableWorkshops] = useState<Workshop[]>([]);
+  const { vehicleTypes, workshops, selectedVehicleType, dateFrom, dateTo } =
+    props;
 
   const bookingForm = useFormik({
     initialValues: {
@@ -58,23 +60,21 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
   });
 
   useEffect(() => {
-    if (props.vehicleTypes.length > 0) {
-      props.setSelectedVehicleType(props.vehicleTypes[0]);
+    if (vehicleTypes.length > 0) {
+      props.setSelectedVehicleType(vehicleTypes[0]);
     }
-  }, [props.vehicleTypes]);
+  }, [vehicleTypes]);
 
   useEffect(() => {
     const filteredWorkshops: Workshop[] = [];
-    for (let i = 0; i < props.workshops.length; i++) {
-      if (
-        contains(props.workshops[i].vehicleTypes, props.selectedVehicleType)
-      ) {
+    for (let i = 0; i < workshops.length; i++) {
+      if (contains(workshops[i].vehicleTypes, selectedVehicleType)) {
         filteredWorkshops.push(props.workshops[i]);
       }
     }
 
     if (filteredWorkshops.length > 0) setAvailableWorkshops(filteredWorkshops);
-  }, [props.workshops, props.selectedVehicleType]);
+  }, [workshops, selectedVehicleType]);
 
   useEffect(() => {
     if (availableWorkshops.length > 0) {
@@ -83,14 +83,14 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
   }, [availableWorkshops]);
 
   useEffect(() => {
-    const dateFrom = new Date(props.dateFrom);
-    const dateTo = new Date(props.dateTo);
-    if (dateTo < dateFrom) {
+    const dateFromObj = new Date(dateFrom);
+    const dateToObj = new Date(dateTo);
+    if (dateToObj < dateFromObj) {
       props.setError("Date to could not be earlier than date from.");
     } else {
       props.setError("");
     }
-  }, [props.dateFrom, props.dateTo]);
+  }, [dateFrom, dateTo]);
 
   const handleVehicleTypeSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     props.setSelectedVehicleType(e.target.value);
@@ -122,7 +122,7 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
               return (
                 <option
                   value={vehicleType}
-                  selected={vehicleType == props.selectedVehicleType}
+                  selected={vehicleType === props.selectedVehicleType}
                 >
                   {vehicleType}
                 </option>
@@ -137,7 +137,7 @@ const WorkshopForm: FunctionComponent<WorkshopFormProps> = (
               return (
                 <option
                   id={workshop.id}
-                  selected={bookingForm.values.workshopID == workshop.id}
+                  selected={bookingForm.values.workshopID === workshop.id}
                 >
                   {workshop.name}
                 </option>

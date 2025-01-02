@@ -2,7 +2,7 @@ import React from "react";
 import { Routes } from "react-router-dom";
 import { Route } from "react-router";
 
-import { Router } from "./components/Router";
+import Router from "./components/Router";
 import { APP_ROUTERS } from "./constants/router";
 import PageNotFound from "./pages/PageNotFound";
 

@@ -1,23 +1,19 @@
-import React, { ReactElement } from "react";
 import { Route } from "react-router";
 
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../pages/ErrorFallback";
+import { RouteConfig } from "../constants/router";
 
-export const Router = {
-  buildRoutes(
-    routes: {
-      path: string;
-      children?: ReactElement | null;
-    }[]
-  ) {
-    return routes.map(({ path, children }, key) => {
+const Router = {
+  buildRoutes(routes: RouteConfig[]) {
+    return routes.map(({ path, children, ...rest }, key) => {
       return (
         <Route
           key={key}
           path={path}
+          {...rest}
           element={
-            <ErrorBoundary FallbackComponent={ErrorFallback} key={path}>
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
               {children}
             </ErrorBoundary>
           }
@@ -26,3 +22,5 @@ export const Router = {
     });
   },
 };
+
+export default Router;

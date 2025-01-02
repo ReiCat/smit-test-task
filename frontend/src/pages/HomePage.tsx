@@ -12,9 +12,7 @@ import { VEHICLE_TYPES } from "../constants/constants";
 
 interface HomePageProps {}
 
-const HomePage: React.FC<HomePageProps> = (
-  props: HomePageProps
-): JSX.Element => {
+const HomePage: React.FC<HomePageProps> = (props: HomePageProps) => {
   const [error, setError] = useState<string>("");
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [slots, setSlots] = useState<Slot[]>([]);
@@ -39,7 +37,7 @@ const HomePage: React.FC<HomePageProps> = (
         setError("");
       })
       .catch((err) => {
-        setError(err.response.statusText);
+        setError(err.response.statusText || err.response.data.error);
         setWorkshops([]);
       });
   }, []);
@@ -66,8 +64,8 @@ const HomePage: React.FC<HomePageProps> = (
         setError("");
       })
       .catch((err) => {
-        setError(err.response.statusText);
         setSlots([]);
+        setError(err.response.statusText || err.response.data.error);
       });
   }, [selectedVehicleType, selectedWorkshopID, dateFrom, dateTo, successTime]);
 

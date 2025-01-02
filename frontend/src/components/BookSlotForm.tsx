@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ChangeEvent } from "react";
+import React, { ChangeEvent, FC } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -25,11 +25,7 @@ interface BookSlotFormProps {
   handleClose: Function;
 }
 
-const BookSlotForm: FunctionComponent<BookSlotFormProps> = (
-  props: BookSlotFormProps
-): JSX.Element => {
-  // const [error, setError] = useState<string>("");
-
+const BookSlotForm: FC<BookSlotFormProps> = (props: BookSlotFormProps) => {
   const bookSlotForm = useFormik({
     initialValues: {
       id: props.slotID,

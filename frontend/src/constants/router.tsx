@@ -2,12 +2,13 @@ import { LINK_PATHS } from "./paths";
 import HomePage from "../pages/HomePage";
 import PageNotFound from "../pages/PageNotFound";
 
-export interface routerItem {
+export interface RouteConfig {
   path: string;
-  children?: JSX.Element | null;
+  children?: React.ReactNode;
+  [key: string]: any;
 }
 
-export const APP_ROUTERS: routerItem[] = [
+export const APP_ROUTERS: RouteConfig[] = [
   {
     path: LINK_PATHS.homePage,
     children: <HomePage />,
