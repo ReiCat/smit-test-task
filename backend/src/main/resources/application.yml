@@ -6,7 +6,7 @@ workshops:
       vehicleTypes:
         - Car
         - Truck
-      url: http://localhost:9004
+      url: http://127.0.0.1:9004
       apiPrefix: /api/v2
       paths:
         getSlots: 
@@ -21,7 +21,7 @@ workshops:
       address: 1A Gunton Rd, London
       vehicleTypes:
         - Car
-      url: http://localhost:9003
+      url: http://127.0.0.1:9003
       apiPrefix: /api/v1
       paths:
         getSlots: 
