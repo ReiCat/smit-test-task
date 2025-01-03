@@ -8,3 +8,6 @@ node: 19.0.0
 
 ### To rebuild frontend:
 `$ cd frontend && npm run build`
+
+### To run project in docker:
+`$ docker-compose up --build
