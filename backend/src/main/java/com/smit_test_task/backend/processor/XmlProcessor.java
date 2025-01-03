@@ -1,6 +1,7 @@
 package com.smit_test_task.backend.processor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,9 +18,11 @@ public class XmlProcessor {
         XmlMapper xmlMapper = new XmlMapper();
 
         XmlSlot xmlSlots = xmlMapper.readValue(xmlPayload, XmlSlot.class);
+        if (xmlSlots == null) {
+            return Collections.emptyList();
+        }
 
         List<Slot> slots = new ArrayList<>();
-
         List<AvailableTime> availableTimes = xmlSlots.getAvailableTimes();
         if (availableTimes != null) {
             for (XmlSlot.AvailableTime availableTime : availableTimes) {
