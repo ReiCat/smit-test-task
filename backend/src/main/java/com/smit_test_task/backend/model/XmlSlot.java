@@ -5,41 +5,31 @@ import java.util.List;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class XmlSlot {
 
-    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlElementWrapper(localName = "availableTimes", useWrapping = false)
     @JacksonXmlProperty(localName = "availableTime")
-    private List<AvailableTime> availableTime;
+    private List<AvailableTime> availableTimes;
 
     public List<AvailableTime> getAvailableTimes() {
-        return availableTime;
+        return availableTimes;
     }
 
-    public void setAvailableTimes(List<AvailableTime> availableTime) {
-        this.availableTime = availableTime;
+    public void setAvailableTimes(List<AvailableTime> availableTimes) {
+        this.availableTimes = availableTimes;
     }
 
+    @Getter
+    @Setter
     public static class AvailableTime {
+        @JacksonXmlProperty(localName = "time")
         private String time;
 
         @JacksonXmlProperty(localName = "uuid")
         private String uuid;
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-        public String getUuid() {
-            return uuid;
-        }
-
-        public void setUuid(String uuid) {
-            this.uuid = uuid;
-        }
     }
 
 }
