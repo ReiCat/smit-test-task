@@ -49,7 +49,8 @@ public class WorkshopsController {
 
     private ErrorProcessor errorProcessor = new ErrorProcessor();
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
+
     @ResponseBody
     public ResponseEntity<List<Workshop>> getWorkshops() {
         List<Workshop> workshopList = workshops.getList();
@@ -94,7 +95,7 @@ public class WorkshopsController {
         }
     }
 
-    @RequestMapping(value = "/bookings", method = RequestMethod.POST)
+    @RequestMapping(value = "/bookings", method = RequestMethod.POST, produces = { "application/json" })
     @ResponseBody
     public ResponseEntity<Slot> book(@RequestBody Booking booking)
             throws InvalidUrlException, RestClientException, JacksonException {
