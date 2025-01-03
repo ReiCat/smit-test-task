@@ -10,4 +10,4 @@ node: 19.0.0
 `$ cd frontend && npm run build`
 
 ### To run project in docker:
-`$ docker-compose up --build
+`$ docker-compose up --build`
