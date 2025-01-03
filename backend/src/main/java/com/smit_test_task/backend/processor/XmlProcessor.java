@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.XmlSlot;
-import com.smit_test_task.backend.model.XmlSlot.AvailableTime;
 
 public class XmlProcessor {
 
