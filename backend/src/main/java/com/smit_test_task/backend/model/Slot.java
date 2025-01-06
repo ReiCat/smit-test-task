@@ -35,4 +35,16 @@ public class Slot<T> {
     @JsonProperty("available")
     private Boolean available;
 
+    public Slot(T ID, String time, Boolean available) {
+        this.ID = ID;
+        this.time = time;
+        this.available = available;
+    }
+
+    public Slot(T ID, String time) {
+        this.ID = ID;
+        this.time = time;
+        this.available = true;
+    }
+
 }

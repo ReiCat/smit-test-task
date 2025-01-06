@@ -10,11 +10,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonProcessor {
+    private final ObjectMapper jsonMapper = new ObjectMapper();
 
-    public static List<Slot> processSlotsJson(String jsonPayload) {
-        ObjectMapper jsonMapper = new ObjectMapper();
+    public List<Slot> processSlotsJson(String jsonPayload) throws RuntimeException {
         try {
-            Slot[] jsonSlots = jsonMapper.readValue(jsonPayload, Slot[].class);
+            Slot[] jsonSlots = this.jsonMapper.readValue(jsonPayload, Slot[].class);
             if (jsonSlots == null) {
                 return Collections.emptyList();
             }

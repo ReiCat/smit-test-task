@@ -12,12 +12,11 @@ import com.smit_test_task.backend.model.XmlSlot;
 
 public class XmlProcessor {
 
-    public static List<Slot> processSlotsXml(String xmlPayload) throws JsonProcessingException, JsonMappingException {
+    private final XmlMapper xmlMapper = new XmlMapper();
 
-        XmlMapper xmlMapper = new XmlMapper();
-
+    public List<Slot> processSlotsXml(String xmlPayload) throws JsonProcessingException, JsonMappingException {
         try {
-            XmlSlot xmlSlots = xmlMapper.readValue(xmlPayload, XmlSlot.class);
+            XmlSlot xmlSlots = this.xmlMapper.readValue(xmlPayload, XmlSlot.class);
             if (xmlSlots == null) {
                 return Collections.emptyList();
             }
@@ -26,10 +25,10 @@ public class XmlProcessor {
             List<XmlSlot.AvailableTime> availableTimes = xmlSlots.getAvailableTimes();
             if (availableTimes != null) {
                 for (XmlSlot.AvailableTime availableTime : availableTimes) {
-                    Slot slot = new Slot();
-                    slot.setAvailable(true);
-                    slot.setID(availableTime.getUuid());
-                    slot.setTime(availableTime.getTime());
+                    Slot slot = new Slot(availableTime.getUuid(), availableTime.getTime(), true);
+                    // slot.setAvailable(true);
+                    // slot.setID(availableTime.getUuid());
+                    // slot.setTime(availableTime.getTime());
                     slots.add(slot);
                 }
             }

@@ -40,4 +40,11 @@ public class Workshop {
     @JsonProperty("contentType")
     private String contentType;
 
+    public Workshop(Integer ID, String name, String address, String[] vehicleTypes) {
+        this.ID = ID;
+        this.name = name;
+        this.address = address;
+        this.vehicleTypes = vehicleTypes;
+    }
+
 }

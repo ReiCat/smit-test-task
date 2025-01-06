@@ -27,6 +27,10 @@ public class SlotsRequest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private final JsonProcessor jsonProcessor = new JsonProcessor();
+
+    private final XmlProcessor xmlProcessor = new XmlProcessor();
+
     private URI apiV1(String apiUrl, BookingFilter filter) throws InvalidUrlException {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,10 +107,10 @@ public class SlotsRequest {
         List<Slot> slots = new ArrayList<>();
         switch (workshop.getContentType()) {
             case "application/json":
-                slots = JsonProcessor.processSlotsJson(responseBody);
+                slots = this.jsonProcessor.processSlotsJson(responseBody);
                 break;
             case "text/xml":
-                slots = XmlProcessor.processSlotsXml(responseBody);
+                slots = this.xmlProcessor.processSlotsXml(responseBody);
                 break;
         }
 

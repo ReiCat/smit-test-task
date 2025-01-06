@@ -65,7 +65,6 @@ public class BookingRequest {
         URI url = this.buildUri(apiUrl, booking.getID().toString());
         ContactInformation contactInformation = new ContactInformation();
         contactInformation.contactInformation = booking.getContactInformation();
-        Slot result = new Slot<>();
         switch (workshop.getContentType()) {
             case "application/json": {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -73,8 +72,7 @@ public class BookingRequest {
                 ResponseEntity<Slot> res = this.executeRequest(url.toString(), bookSlotPath.method, json,
                         workshop.getContentType(),
                         Slot.class);
-                result = res.getBody();
-                break;
+                return res.getBody();
             }
             case "text/xml": {
                 XmlMapper xmlMapper = new XmlMapper();
@@ -85,12 +83,11 @@ public class BookingRequest {
                 ResponseEntity<Slot> res = this.executeRequest(url.toString(), bookSlotPath.method, xml,
                         workshop.getContentType(),
                         Slot.class);
-                result = res.getBody();
-                break;
+                return res.getBody();
             }
         }
 
-        return result;
+        return null;
     }
 
 }
