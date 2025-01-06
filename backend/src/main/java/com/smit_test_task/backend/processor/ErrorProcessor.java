@@ -8,9 +8,9 @@ import com.smit_test_task.backend.model.ErrorMessage;
 
 public class ErrorProcessor {
 
-    ObjectMapper jsonMapper = new ObjectMapper();
+    private final ObjectMapper jsonMapper = new ObjectMapper();
 
-    ObjectMapper xmlMapper = new XmlMapper();
+    private final ObjectMapper xmlMapper = new XmlMapper();
 
     public ErrorMessage processJsonError(String jsonPayload) throws JsonProcessingException, JsonMappingException {
         ErrorMessage error = this.jsonMapper.readValue(jsonPayload, ErrorMessage.class);

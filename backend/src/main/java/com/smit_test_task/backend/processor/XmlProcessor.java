@@ -26,9 +26,6 @@ public class XmlProcessor {
             if (availableTimes != null) {
                 for (XmlSlot.AvailableTime availableTime : availableTimes) {
                     Slot slot = new Slot(availableTime.getUuid(), availableTime.getTime(), true);
-                    // slot.setAvailable(true);
-                    // slot.setID(availableTime.getUuid());
-                    // slot.setTime(availableTime.getTime());
                     slots.add(slot);
                 }
             }

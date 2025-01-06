@@ -17,4 +17,4 @@ node: 19.0.0
 
 ### To run tests:
 
-`$ cd backend && gradle test`
+`$ cd backend && ./gradlew test`
