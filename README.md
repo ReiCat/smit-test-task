@@ -11,10 +11,10 @@ node: 19.0.0
 
 `$ cd frontend && npm run build`
 
-### to run project in docker:
+### To run project in docker:
 
 `$ docker-compose up --build`
 
-### to run tests:
+### To run tests:
 
 `$ cd backend && gradle test`
