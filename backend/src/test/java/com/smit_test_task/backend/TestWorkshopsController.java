@@ -36,8 +36,9 @@ public class TestWorkshopsController {
 
     @Test
     public void testGetWorkshopsReturnsDataResponse() throws Exception {
-
-        List<Workshop> mockWorkshops = List.of(new Workshop(1, "name", "address", new String[] { "Car", "Truck" }));
+        String[] vehicleTypes = new String[] { "Car", "Truck" };
+        Workshop workshop = new Workshop(1, "name", "address", vehicleTypes);
+        List<Workshop> mockWorkshops = List.of(workshop);
         when(workshopsController.getWorkshops()).thenReturn(ResponseEntity.ok(mockWorkshops));
 
         MockMvc.perform(get(API_V1_PREFIX + "/workshops"))
@@ -47,8 +48,8 @@ public class TestWorkshopsController {
                 .andExpect(jsonPath("$[0].name").value("name"))
                 .andExpect(jsonPath("$[0].address").value("address"))
                 .andExpect(jsonPath("$[0].vehicleTypes.length()").value(2))
-                .andExpect(jsonPath("$[0].vehicleTypes[0]").value("Car"))
-                .andExpect(jsonPath("$[0].vehicleTypes[1]").value("Truck"));
+                .andExpect(jsonPath("$[0].vehicleTypes[0]").value(vehicleTypes[0]))
+                .andExpect(jsonPath("$[0].vehicleTypes[1]").value(vehicleTypes[1]));
     }
 
 }

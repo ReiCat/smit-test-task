@@ -58,7 +58,7 @@ public class WorkshopsController {
 
     @RequestMapping(value = "/slots", method = RequestMethod.GET, produces = { "application/json" })
     @ResponseBody
-    public ResponseEntity<List<Slot<?>>> getSlots(
+    public ResponseEntity<List<Slot>> getSlots(
             @RequestParam(value = "workshopID", defaultValue = "") Integer workshopID,
             @RequestParam(value = "from", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
             @RequestParam(value = "to", defaultValue = "") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to)
@@ -72,7 +72,7 @@ public class WorkshopsController {
         BookingFilter filter = new BookingFilter(from, to);
 
         try {
-            List<Slot<?>> slots = this.slotsRequest.getAvailableSlots(workshop, filter);
+            List<Slot> slots = this.slotsRequest.getAvailableSlots(workshop, filter);
             return ResponseEntity.ok(slots);
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
@@ -96,7 +96,7 @@ public class WorkshopsController {
 
     @RequestMapping(value = "/bookings", method = RequestMethod.POST, produces = { "application/json" })
     @ResponseBody
-    public ResponseEntity<Slot<?>> book(@RequestBody Booking<?> booking)
+    public ResponseEntity<Slot> book(@RequestBody Booking<?> booking)
             throws InvalidUrlException, RestClientException, JacksonException {
 
         Workshop workshop = workshops.getWorkshopByID(booking.getWorkshopID());
@@ -105,7 +105,7 @@ public class WorkshopsController {
         }
 
         try {
-            Slot<?> slot = this.bookingRequest.bookSlot(workshop, booking);
+            Slot slot = this.bookingRequest.bookSlot(workshop, booking);
             return ResponseEntity.ok(slot);
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,

@@ -14,7 +14,7 @@ public class XmlProcessor {
 
     private final XmlMapper xmlMapper = new XmlMapper();
 
-    public List<Slot<?>> processSlotsXml(String xmlPayload) throws JsonProcessingException, JsonMappingException {
+    public List<Slot> processSlotsXml(String xmlPayload) throws JsonProcessingException, JsonMappingException {
 
         try {
             XmlSlot xmlSlots = this.xmlMapper.readValue(xmlPayload, XmlSlot.class);
@@ -22,11 +22,11 @@ public class XmlProcessor {
                 return Collections.emptyList();
             }
 
-            List<Slot<?>> slots = new ArrayList<>();
+            List<Slot> slots = new ArrayList<>();
             List<XmlSlot.AvailableTime> availableTimes = xmlSlots.getAvailableTimes();
             if (availableTimes != null) {
                 for (XmlSlot.AvailableTime availableTime : availableTimes) {
-                    Slot<String> slot = new Slot<String>(availableTime.getUuid(), availableTime.getTime(), true);
+                    Slot slot = new Slot(availableTime.getUUID(), availableTime.getTime(), true);
                     slots.add(slot);
                 }
             }

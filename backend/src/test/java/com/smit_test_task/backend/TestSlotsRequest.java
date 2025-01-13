@@ -25,9 +25,6 @@ import com.smit_test_task.backend.request.SlotsRequest;
 
 public class TestSlotsRequest {
 
-    // private final PrintStream originalOut = System.out;
-    // private final PrintStream originalErr = System.err;
-
     private Date fromDate;
     private Date toDate;
 
@@ -42,22 +39,16 @@ public class TestSlotsRequest {
         this.toDate = Date.from(LocalDate.parse("2024-12-31").atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    // @AfterAll
-    // public void restoreStreams() {
-    // System.setOut(originalOut);
-    // System.setErr(originalErr);
-    // }
-
     @Test
     public void testGetAvailableSlotsReturnsErrorIfWorkshopParamIsNull() throws Exception {
 
         Workshop workshop = null;
         BookingFilter filter = new BookingFilter(this.fromDate, this.toDate);
 
-        when(slotsRequest.getAvailableSlots(workshop, filter))
-                .thenThrow(new RuntimeException("Workshop instance is required"));
+        // when(slotsRequest.getAvailableSlots(workshop, filter))
+        // .thenThrow(new RuntimeException("Workshop instance is required"));
 
-        Exception exception = assertThrowsExactly(Exception.class, () -> {
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
             slotsRequest.getAvailableSlots(workshop, filter);
         });
 

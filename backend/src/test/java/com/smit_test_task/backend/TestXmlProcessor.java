@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.smit_test_task.backend.model.Slot;
@@ -17,8 +16,7 @@ import com.smit_test_task.backend.processor.XmlProcessor;
 
 public class TestXmlProcessor {
 
-    @Mock
-    private XmlProcessor xmlProcessor;
+    private XmlProcessor xmlProcessor = new XmlProcessor();
 
     @BeforeEach
     public void setUp() {
@@ -29,39 +27,53 @@ public class TestXmlProcessor {
     public void testProcessSlotsXmlThrowsRuntimeException() throws Exception {
         String testPayload = "invalid-xml";
 
-        when(xmlProcessor.processSlotsXml(testPayload)).thenThrow(new RuntimeException("Invalid XML"));
-
         Exception exception = assertThrows(RuntimeException.class, () -> {
             xmlProcessor.processSlotsXml(testPayload);
         });
 
-        assertEquals("Invalid XML", exception.getMessage());
+        assertEquals("Error processing XML payload", exception.getMessage());
     }
 
     @Test
     public void testProcessSlotsXmlReturnsEmptyArray() throws Exception {
-        String testPayload = "[]";
+        String testPayload = "<tireChangeTimesResponse></tireChangeTimesResponse>";
 
-        when(xmlProcessor.processSlotsXml(testPayload)).thenReturn(Collections.emptyList());
-
-        List<Slot<?>> result = xmlProcessor.processSlotsXml(testPayload);
+        List<Slot> result = xmlProcessor.processSlotsXml(testPayload);
 
         assertEquals(Collections.emptyList(), result);
     }
 
     @Test
     public void testProcessSlotsXmlReturnsDataResponse() throws Exception {
-        String ID = "uuid";
-        String time = "2024-12-30T08:00:00Z";
+        String ID = "b6ce5c08-b94a-4678-aed8-1b4c5f8e571e";
+        String time = "2025-01-07T06:00:00Z";
+        Boolean available = true;
         String testPayload = String.format(
-                "<london.tireChangeTimesResponse><availableTimes><uuid>%s</uuid><time>%s</time></availableTimes></london.tireChangeTimesResponse>",
+                "<tireChangeTimesResponse><availableTime><uuid>%s</uuid><time>%s</time></availableTime></tireChangeTimesResponse>",
                 ID, time);
 
-        List<Slot<?>> mockSlots = List.of(new Slot<String>(ID, time));
-        when(xmlProcessor.processSlotsXml(testPayload)).thenReturn(mockSlots);
+        Slot mockSlot = new Slot(ID, time, available);
 
-        List<Slot<?>> result = xmlProcessor.processSlotsXml(testPayload);
+        List<Slot> result = xmlProcessor.processSlotsXml(testPayload);
 
-        assertEquals(mockSlots, result);
+        assertEquals(1, result.size());
+        assertEquals(mockSlot.getID(), result.get(0).getID());
+        assertEquals(mockSlot.getTime(), result.get(0).getTime());
+        assertEquals(mockSlot.getAvailable(), result.get(0).getAvailable());
     }
+
+    // @Test
+    // public void testProcessSlotsJsonReturnsDataResponse() throws Exception {
+    // String ID = "b6ce5c08-b94a-4678-aed8-1b4c5f8e571e";
+    // String time = "2025-01-07T06:00:00Z";
+    // String testPayload = String.format(
+    // "\"<tireChangeTimesResponse><availableTime><uuid>%s</uuid><time>%s</time></availableTime></tireChangeTimesResponse>\"",
+    // ID, time);
+
+    // List<Slot> result = xmlProcessor.processSlotsXml(testPayload);
+
+    // assertEquals(ID, result.get(0).getID());
+    // assertEquals(time, result.get(0).getTime());
+    // assertEquals(true, result.get(0).getAvailable());
+    // }
 }

@@ -10,12 +10,12 @@ import lombok.Setter;
 
 public class XmlSlot {
 
-    @JacksonXmlElementWrapper(localName = "availableTimes", useWrapping = false)
+    @JacksonXmlElementWrapper(localName = "tireChangeTimesResponse", useWrapping = false)
     @JacksonXmlProperty(localName = "availableTime")
     private List<AvailableTime> availableTimes;
 
     public List<AvailableTime> getAvailableTimes() {
-        return availableTimes;
+        return this.availableTimes;
     }
 
     public void setAvailableTimes(List<AvailableTime> availableTimes) {
@@ -29,7 +29,7 @@ public class XmlSlot {
         private String time;
 
         @JacksonXmlProperty(localName = "uuid")
-        private String uuid;
+        private String UUID;
     }
 
 }

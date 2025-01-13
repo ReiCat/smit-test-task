@@ -85,7 +85,7 @@ public class SlotsRequest {
         }
     }
 
-    public List<Slot<?>> getAvailableSlots(Workshop workshop, BookingFilter filter)
+    public List<Slot> getAvailableSlots(Workshop workshop, BookingFilter filter)
             throws InvalidUrlException, IllegalArgumentException, RestClientException, JsonProcessingException,
             JsonMappingException {
 
@@ -108,12 +108,12 @@ public class SlotsRequest {
         // List<Slot> slots = new ArrayList<>();
         switch (workshop.getContentType()) {
             case "application/json": {
-                List<Slot<?>> slots = this.jsonProcessor.processSlotsJson(responseBody);
+                List<Slot> slots = this.jsonProcessor.processSlotsJson(responseBody);
                 return slots;
             }
 
             case "text/xml":
-                List<Slot<?>> slots = this.xmlProcessor.processSlotsXml(responseBody);
+                List<Slot> slots = this.xmlProcessor.processSlotsXml(responseBody);
                 return slots;
         }
 
