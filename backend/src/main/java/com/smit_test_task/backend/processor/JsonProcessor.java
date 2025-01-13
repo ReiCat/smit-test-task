@@ -12,18 +12,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonProcessor {
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
-    public List<Slot> processSlotsJson(String jsonPayload) throws RuntimeException {
+    public List<Slot<?>> processSlotsJson(String jsonPayload) throws RuntimeException {
+
         try {
-            Slot[] jsonSlots = this.jsonMapper.readValue(jsonPayload, Slot[].class);
+            Slot<?>[] jsonSlots = this.jsonMapper.readValue(jsonPayload, Slot[].class);
             if (jsonSlots == null) {
                 return Collections.emptyList();
             }
+
             return Arrays.stream(jsonSlots)
                     .filter(slot -> Boolean.TRUE.equals(slot.getAvailable()))
                     .collect(Collectors.toList());
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error processing JSON payload", e);
         }
+
     }
 
 }

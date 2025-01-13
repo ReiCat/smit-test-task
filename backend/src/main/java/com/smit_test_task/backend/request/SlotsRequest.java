@@ -2,7 +2,7 @@ package com.smit_test_task.backend.request;
 
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +49,6 @@ public class SlotsRequest {
                 .toUri();
 
         return url;
-
     }
 
     private URI apiV2(String apiUrl, BookingFilter filter) throws InvalidUrlException {
@@ -72,7 +71,6 @@ public class SlotsRequest {
                 .toUri();
 
         return url;
-
     }
 
     private URI getFormattedUrl(String apiUrl, String apiPrefix, BookingFilter filter)
@@ -85,12 +83,15 @@ public class SlotsRequest {
         } else {
             throw new IllegalArgumentException("Unknown API type");
         }
-
     }
 
-    public List<Slot> getAvailableSlots(Workshop workshop, BookingFilter filter)
+    public List<Slot<?>> getAvailableSlots(Workshop workshop, BookingFilter filter)
             throws InvalidUrlException, IllegalArgumentException, RestClientException, JsonProcessingException,
             JsonMappingException {
+
+        if (workshop == null) {
+            throw new RuntimeException("Workshop param is undefined");
+        }
 
         Map<String, Path> workshopPaths = workshop.getPaths();
 
@@ -104,17 +105,19 @@ public class SlotsRequest {
 
         ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
         String responseBody = response.getBody();
-        List<Slot> slots = new ArrayList<>();
+        // List<Slot> slots = new ArrayList<>();
         switch (workshop.getContentType()) {
-            case "application/json":
-                slots = this.jsonProcessor.processSlotsJson(responseBody);
-                break;
+            case "application/json": {
+                List<Slot<?>> slots = this.jsonProcessor.processSlotsJson(responseBody);
+                return slots;
+            }
+
             case "text/xml":
-                slots = this.xmlProcessor.processSlotsXml(responseBody);
-                break;
+                List<Slot<?>> slots = this.xmlProcessor.processSlotsXml(responseBody);
+                return slots;
         }
 
-        return slots;
+        return null;
     }
 
 }

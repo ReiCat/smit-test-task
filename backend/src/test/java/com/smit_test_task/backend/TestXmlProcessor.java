@@ -44,7 +44,7 @@ public class TestXmlProcessor {
 
         when(xmlProcessor.processSlotsXml(testPayload)).thenReturn(Collections.emptyList());
 
-        List<Slot> result = xmlProcessor.processSlotsXml(testPayload);
+        List<Slot<?>> result = xmlProcessor.processSlotsXml(testPayload);
 
         assertEquals(Collections.emptyList(), result);
     }
@@ -57,10 +57,10 @@ public class TestXmlProcessor {
                 "<london.tireChangeTimesResponse><availableTimes><uuid>%s</uuid><time>%s</time></availableTimes></london.tireChangeTimesResponse>",
                 ID, time);
 
-        List<Slot> mockSlots = List.of(new Slot(ID, time));
+        List<Slot<?>> mockSlots = List.of(new Slot<String>(ID, time));
         when(xmlProcessor.processSlotsXml(testPayload)).thenReturn(mockSlots);
 
-        List<Slot> result = xmlProcessor.processSlotsXml(testPayload);
+        List<Slot<?>> result = xmlProcessor.processSlotsXml(testPayload);
 
         assertEquals(mockSlots, result);
     }

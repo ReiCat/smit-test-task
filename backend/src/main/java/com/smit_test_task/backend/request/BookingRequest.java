@@ -57,7 +57,7 @@ public class BookingRequest {
         return result;
     }
 
-    public Slot bookSlot(Workshop workshop, Booking booking)
+    public Slot<?> bookSlot(Workshop workshop, Booking booking)
             throws InvalidUrlException, RestClientException, JsonProcessingException, JsonMappingException {
         Map<String, Path> workshopPaths = workshop.getPaths();
         Path bookSlotPath = workshopPaths.get("bookSlot");

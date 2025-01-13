@@ -1,14 +1,14 @@
 package com.smit_test_task.backend;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.processor.JsonProcessor;
 
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+// import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,13 +19,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+// import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class TestJsonProcessor {
 
-    @Mock
-    private JsonProcessor jsonProcessor;
+    // @Mock
+    private JsonProcessor jsonProcessor = new JsonProcessor();
 
     @BeforeEach
     public void setUp() {
@@ -36,22 +36,18 @@ public class TestJsonProcessor {
     public void testProcessSlotsJsonThrowsRuntimeException() throws Exception {
         String testPayload = "invalid-json";
 
-        when(jsonProcessor.processSlotsJson(testPayload)).thenThrow(new RuntimeException("Invalid JSON"));
-
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            jsonProcessor.processSlotsJson(testPayload);
+            this.jsonProcessor.processSlotsJson(testPayload);
         });
 
-        assertEquals("Invalid JSON", exception.getMessage());
+        assertEquals("Error processing JSON payload", exception.getMessage());
     }
 
     @Test
     public void testProcessSlotsJsonReturnsEmptyArray() throws Exception {
         String testPayload = "[]";
 
-        when(jsonProcessor.processSlotsJson(testPayload)).thenReturn(Collections.emptyList());
-
-        List<Slot> result = jsonProcessor.processSlotsJson(testPayload);
+        List<Slot<?>> result = jsonProcessor.processSlotsJson(testPayload);
 
         assertEquals(Collections.emptyList(), result);
     }
@@ -63,10 +59,10 @@ public class TestJsonProcessor {
         Boolean available = true;
         String testPayload = String.format("[\"id\": %s, \"time\": %s, \"available\": %s]", ID, time, available);
 
-        List<Slot> mockSlots = List.of(new Slot(ID, time, available));
-        when(jsonProcessor.processSlotsJson(testPayload)).thenReturn(mockSlots);
+        List<Slot<Integer>> mockSlots = List.of(new Slot<Integer>(ID, time, available));
+        // when(jsonProcessor.processSlotsJson(testPayload)).thenReturn(mockSlots);
 
-        List<Slot> result = jsonProcessor.processSlotsJson(testPayload);
+        List<Slot<?>> result = jsonProcessor.processSlotsJson(testPayload);
 
         assertEquals(mockSlots, result);
     }
