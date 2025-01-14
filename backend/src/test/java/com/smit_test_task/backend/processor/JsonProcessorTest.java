@@ -1,5 +1,7 @@
 package com.smit_test_task.backend.processor;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.model.Slot;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +27,7 @@ public class JsonProcessorTest {
     public void testProcessSlotsJsonThrowsRuntimeException() throws Exception {
         String testPayload = "invalid-json";
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(JsonProcessingException.class, () -> {
             this.jsonProcessor.processSlotsJson(testPayload);
         });
 

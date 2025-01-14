@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.model.Slot;
 
 public class XmlProcessorTest {
@@ -25,7 +26,7 @@ public class XmlProcessorTest {
     public void testProcessSlotsXmlThrowsRuntimeException() throws Exception {
         String testPayload = "invalid-xml";
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(JsonProcessingException.class, () -> {
             xmlProcessor.processSlotsXml(testPayload);
         });
 
