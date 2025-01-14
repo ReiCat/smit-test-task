@@ -1,146 +1,203 @@
 package com.smit_test_task.backend.request;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-// import java.io.PrintStream;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-// import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestTemplate;
 
 import com.smit_test_task.backend.model.BookingFilter;
 import com.smit_test_task.backend.model.Path;
+import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
-import com.smit_test_task.backend.request.SlotsRequest;
 
+@ExtendWith(SpringExtension.class)
 public class SlotsRequestTest {
 
     private Date fromDate;
     private Date toDate;
 
+    private Workshop workshop;
+
+    private BookingFilter filter;
+    private Map<String, Path> paths;
+    private Path slotsPath;
+
     @Mock
+    private RestTemplate restTemplate;
+
+    @InjectMocks
     private SlotsRequest slotsRequest;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         this.fromDate = Date.from(LocalDate.parse("2024-12-30").atStartOfDay(ZoneId.systemDefault()).toInstant());
         this.toDate = Date.from(LocalDate.parse("2024-12-31").atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        String[] vehicleTypes = new String[] { "Car", "Truck" };
+        slotsPath = new Path();
+        slotsPath.path = "/path";
+        slotsPath.method = "GET";
+        paths = new HashMap<String, Path>() {
+        };
+        paths.put("getSlots", slotsPath);
+        this.workshop = new Workshop(
+                1,
+                "name",
+                "address",
+                vehicleTypes,
+                "https://workshop.com",
+                "/api/v1",
+                "application/json",
+                paths);
+
+        this.filter = new BookingFilter(this.fromDate, this.toDate);
     }
 
     @Test
-    public void testGetAvailableSlotsReturnsErrorIfWorkshopParamIsNull() throws Exception {
-        Workshop workshop = null;
-        BookingFilter filter = new BookingFilter(this.fromDate, this.toDate);
-
-        when(slotsRequest.getAvailableSlots(workshop, filter))
-                .thenThrow(new RuntimeException("Workshop instance is required"));
+    public void testGetAvailableSlotsReturnsErrorIfWorkshopParamIsNull() {
+        this.workshop = null;
 
         Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
-            slotsRequest.getAvailableSlots(workshop, filter);
+            this.slotsRequest.getAvailableSlots(this.workshop, this.filter);
         });
 
-        assertEquals("Workshop instance is required", exception.getMessage());
+        assertEquals("Workshop param is undefined", exception.getMessage());
     }
 
-    // @Test
-    // public void testGetAvailableSlotsReturnsErrorIfWorkshopPathsParamIsNull()
-    // throws Exception {
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfFilterParamIsNull() {
+        this.filter = null;
 
-    // Workshop workshop = new Workshop(1, "workshop", "address", new String[] {
-    // "Car", "Truck" });
-    // BookingFilter filter = new BookingFilter(this.fromDate, this.toDate);
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(this.workshop, this.filter);
+        });
 
-    // when(slotsRequest.getAvailableSlots(workshop, filter))
-    // .thenThrow(new RuntimeException("No workshop api paths found"));
+        assertEquals("Filter param is undefined", exception.getMessage());
+    }
 
-    // Exception exception = assertThrowsExactly(Exception.class, () -> {
-    // slotsRequest.getAvailableSlots(workshop, filter);
-    // });
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfWorkshopPathsParamIsNull() {
+        this.workshop.setPaths(null);
 
-    // assertEquals("No workshop api paths found", exception.getMessage());
-    // }
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(this.workshop, this.filter);
+        });
 
-    // @Test
-    // public void testGetAvailableSlotsReturnsErrorIfWorkshopSlotsPathParamIsNull()
-    // throws Exception {
+        assertEquals("Workshop paths are undefined", exception.getMessage());
+    }
 
-    // Workshop workshop = new Workshop(1, "workshop", "address", new String[] {
-    // "Car", "Truck" });
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfWorkshopPathGetSlotsPathParamIsNull() {
+        Map<String, Path> paths = new HashMap<String, Path>() {
+        };
+        workshop.setPaths(paths);
 
-    // Map<String, Path> paths = new HashMap<String, Path>() {
-    // };
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(this.workshop, this.filter);
+        });
 
-    // workshop.setPaths(paths);
+        assertEquals("Workshop getSlots path is undefined", exception.getMessage());
+    }
 
-    // BookingFilter filter = new BookingFilter(this.fromDate, this.toDate);
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfWorkshopUrlParamIsNull() {
+        this.workshop.setUrl(null);
 
-    // when(slotsRequest.getAvailableSlots(workshop, filter))
-    // .thenThrow(new RuntimeException("No slots api path found"));
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(workshop, filter);
+        });
 
-    // Exception exception = assertThrows(RuntimeException.class, () -> {
-    // slotsRequest.getAvailableSlots(workshop, filter);
-    // });
+        assertEquals("Workshop url is undefined", exception.getMessage());
+    }
 
-    // assertEquals("No slots api path found", exception.getMessage());
-    // }
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfApiPrefixParamIsNull() {
+        this.workshop.setApiPrefix(null);
 
-    // @Test
-    // public void testGetAvailableSlotsReturnsErrorIfWorkshopApiPrefixParamIsNull()
-    // throws Exception {
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(workshop, filter);
+        });
 
-    // Workshop workshop = new Workshop(1, "workshop", "address", new String[] {
-    // "Car", "Truck" });
-    // Path slotsPath = new Path();
-    // slotsPath.path = "path";
-    // slotsPath.method = "GET";
+        assertEquals("Workshop apiPrefix is undefined", exception.getMessage());
+    }
 
-    // Map<String, Path> paths = new HashMap<String, Path>() {
-    // {
-    // put("slotsPath", slotsPath);
-    // }
-    // };
-    // workshop.setPaths(paths);
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfContentTypeParamIsNull() {
+        this.workshop.setContentType(null);
 
-    // BookingFilter filter = new BookingFilter(this.fromDate, this.toDate);
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(workshop, filter);
+        });
 
-    // when(slotsRequest.getAvailableSlots(workshop, filter))
-    // .thenThrow(new RuntimeException("No api prefix found"));
+        assertEquals("Workshop contentType is undefined", exception.getMessage());
+    }
 
-    // Exception exception = assertThrows(RuntimeException.class, () -> {
-    // slotsRequest.getAvailableSlots(workshop, filter);
-    // });
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfApiPrefixParamIsWrong() {
+        this.workshop.setApiPrefix("unknownApiPrefix");
 
-    // assertEquals("No api prefix found", exception.getMessage());
-    // }
+        Exception exception = assertThrowsExactly(IllegalArgumentException.class, () -> {
+            this.slotsRequest.getAvailableSlots(workshop, filter);
+        });
 
-    // @Test
-    // public void testGetAvailableSlotsReturnsErrorIfFilterParamIsNull() throws
-    // Exception {
+        assertEquals("Unknown API prefix", exception.getMessage());
+    }
 
-    // Workshop workshop = new Workshop(1, "workshop", "address", new String[] {
-    // "Car", "Truck" });
-    // BookingFilter filter = null;
+    @Test
+    public void testGetAvailableSlotsReturnsErrorIfGettingUrlEntityFailed() {
+        when(this.restTemplate.getForEntity(any(URI.class), eq(String.class)))
+                .thenThrow(new RuntimeException("Getting workshop slots failed"));
 
-    // when(slotsRequest.getAvailableSlots(workshop, filter))
-    // .thenThrow(new RuntimeException("Booking filter instance is required"));
+        Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
+            this.slotsRequest.getAvailableSlots(workshop, filter);
+        });
 
-    // Exception exception = assertThrowsExactly(Exception.class, () -> {
-    // slotsRequest.getAvailableSlots(workshop, filter);
-    // });
+        assertEquals("Getting workshop slots failed", exception.getMessage());
 
-    // assertEquals("Booking filter instance is required", exception.getMessage());
+    }
 
-    // }
+    @Test
+    public void testGetAvailableSlotsReturnsResultInCaseOfSuccess() {
+        Integer ID = 1;
+        String time = "2024-12-30T08:00:00Z";
+        Boolean available = true;
+        Slot mockSlot = new Slot(ID, time, available);
+
+        String responsePayload = String.format("[{\"id\": %d, \"time\": \"%s\", \"available\": %b}]",
+                ID, time, available);
+
+        when(this.restTemplate.getForEntity(any(URI.class), eq(String.class)))
+                .thenReturn(ResponseEntity.ok(responsePayload));
+
+        List<Slot> result = slotsRequest.getAvailableSlots(this.workshop, this.filter);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        Slot resultSlot = result.get(0);
+        assertEquals(mockSlot.getID(), resultSlot.getID());
+        assertEquals(mockSlot.getTime(), resultSlot.getTime());
+        assertEquals(mockSlot.getAvailable(), resultSlot.getAvailable());
+
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.smit_test_task.backend.processor;
 
 import com.smit_test_task.backend.model.Slot;
-import com.smit_test_task.backend.processor.JsonProcessor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

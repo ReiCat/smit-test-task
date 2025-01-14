@@ -77,8 +77,6 @@ public class WorkshopsController {
         } catch (ResourceAccessException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
                     "Could not connect to the workshop. Please try again later.", e);
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (HttpClientErrorException e) {
             ErrorMessage error = this.errorProcessor.processError(
                     workshop.getContentType(), e.getResponseBodyAsString());

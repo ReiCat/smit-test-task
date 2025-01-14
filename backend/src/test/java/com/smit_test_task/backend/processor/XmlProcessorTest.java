@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
 import com.smit_test_task.backend.model.Slot;
-import com.smit_test_task.backend.processor.XmlProcessor;
 
 public class XmlProcessorTest {
 

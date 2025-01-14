@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +16,6 @@ import org.springframework.web.util.InvalidUrlException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.smit_test_task.backend.model.Path;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
@@ -25,7 +25,8 @@ import com.smit_test_task.backend.processor.XmlProcessor;
 
 public class SlotsRequest {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate = new RestTemplate();
 
     private final JsonProcessor jsonProcessor = new JsonProcessor();
 
@@ -81,43 +82,67 @@ public class SlotsRequest {
         } else if ("/api/v2".equals(apiPrefix)) {
             return this.apiV2(apiUrl, filter);
         } else {
-            throw new IllegalArgumentException("Unknown API type");
+            throw new IllegalArgumentException("Unknown API prefix");
         }
     }
 
-    public List<Slot> getAvailableSlots(Workshop workshop, BookingFilter filter)
-            throws InvalidUrlException, IllegalArgumentException, RestClientException, JsonProcessingException,
-            JsonMappingException {
+    public List<Slot> getAvailableSlots(Workshop workshop, BookingFilter filter) throws RuntimeException {
 
         if (workshop == null) {
             throw new RuntimeException("Workshop param is undefined");
         }
 
+        if (filter == null) {
+            throw new RuntimeException("Filter param is undefined");
+        }
+
         Map<String, Path> workshopPaths = workshop.getPaths();
+        if (workshopPaths == null) {
+            throw new RuntimeException("Workshop paths are undefined");
+        }
 
         Path slotsPath = workshopPaths.get("getSlots");
+        if (slotsPath == null) {
+            throw new RuntimeException("Workshop getSlots path is undefined");
+        }
+
+        String workshopUrl = workshop.getUrl();
+        if (workshopUrl == null) {
+            throw new RuntimeException("Workshop url is undefined");
+        }
 
         String apiPrefix = workshop.getApiPrefix();
+        if (apiPrefix == null) {
+            throw new RuntimeException("Workshop apiPrefix is undefined");
+        }
 
-        String apiUrl = workshop.getUrl() + apiPrefix + slotsPath.path;
+        String contentType = workshop.getContentType();
+        if (contentType == null) {
+            throw new RuntimeException("Workshop contentType is undefined");
+        }
+
+        String apiUrl = workshopUrl + apiPrefix + slotsPath.path;
 
         URI url = getFormattedUrl(apiUrl, apiPrefix, filter);
 
         ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
         String responseBody = response.getBody();
-        // List<Slot> slots = new ArrayList<>();
-        switch (workshop.getContentType()) {
-            case "application/json": {
-                List<Slot> slots = this.jsonProcessor.processSlotsJson(responseBody);
-                return slots;
+
+        try {
+            switch (contentType) {
+                case "application/json": {
+                    return this.jsonProcessor.processSlotsJson(responseBody);
+                }
+
+                case "text/xml":
+                    return this.xmlProcessor.processSlotsXml(responseBody);
+
+                default:
+                    return null;
             }
-
-            case "text/xml":
-                List<Slot> slots = this.xmlProcessor.processSlotsXml(responseBody);
-                return slots;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to process JSON/XML response", e);
         }
-
-        return null;
     }
 
 }

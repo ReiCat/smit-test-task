@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,7 +30,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookingRequest {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate = new RestTemplate();
 
     private URI buildUri(String apiUrl, String bookingID) throws InvalidUrlException {
 
@@ -51,7 +53,7 @@ public class BookingRequest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(contentType));
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
-        ResponseEntity<T> result = this.restTemplate.exchange(url, HttpMethod.valueOf(method),
+        ResponseEntity<T> result = restTemplate.exchange(url, HttpMethod.valueOf(method),
                 entity, responseType);
 
         return result;

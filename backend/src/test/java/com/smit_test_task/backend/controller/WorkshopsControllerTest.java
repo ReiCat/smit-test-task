@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.smit_test_task.backend.controller.WorkshopsController;
 import com.smit_test_task.backend.model.Path;
 import com.smit_test_task.backend.model.Workshop;
 
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @WebMvcTest(WorkshopsController.class)
-public class TestWorkshopsController {
+public class WorkshopsControllerTest {
 
     @Autowired
     private MockMvc MockMvc;
@@ -35,11 +34,11 @@ public class TestWorkshopsController {
     public void testGetWorkshopsReturnsDataResponse() throws Exception {
         String[] vehicleTypes = new String[] { "Car", "Truck" };
         Path slotsPath = new Path();
-        slotsPath.path = "path";
+        slotsPath.path = "/path";
         slotsPath.method = "GET";
         Map<String, Path> paths = new HashMap<String, Path>() {
         };
-        paths.put("slotsPath", slotsPath);
+        paths.put("getSlots", slotsPath);
         Workshop workshop = new Workshop(
                 1,
                 "name",
@@ -64,8 +63,8 @@ public class TestWorkshopsController {
                 .andExpect(jsonPath("$[0].url").value("url"))
                 .andExpect(jsonPath("$[0].apiPrefix").value("apiPrefix"))
                 .andExpect(jsonPath("$[0].contentType").value("contentType"))
-                .andExpect(jsonPath("$[0].paths.slotsPath.path").value("path"))
-                .andExpect(jsonPath("$[0].paths.slotsPath.method").value("GET"));
+                .andExpect(jsonPath("$[0].paths.getSlots.path").value(slotsPath.path))
+                .andExpect(jsonPath("$[0].paths.getSlots.method").value(slotsPath.method));
     }
 
 }
