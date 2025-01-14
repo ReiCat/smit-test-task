@@ -1,4 +1,4 @@
-package com.smit_test_task.backend;
+package com.smit_test_task.backend.request;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,7 +23,7 @@ import com.smit_test_task.backend.model.Path;
 import com.smit_test_task.backend.model.Workshop;
 import com.smit_test_task.backend.request.SlotsRequest;
 
-public class TestSlotsRequest {
+public class SlotsRequestTest {
 
     private Date fromDate;
     private Date toDate;
@@ -41,12 +41,11 @@ public class TestSlotsRequest {
 
     @Test
     public void testGetAvailableSlotsReturnsErrorIfWorkshopParamIsNull() throws Exception {
-
         Workshop workshop = null;
         BookingFilter filter = new BookingFilter(this.fromDate, this.toDate);
 
-        // when(slotsRequest.getAvailableSlots(workshop, filter))
-        // .thenThrow(new RuntimeException("Workshop instance is required"));
+        when(slotsRequest.getAvailableSlots(workshop, filter))
+                .thenThrow(new RuntimeException("Workshop instance is required"));
 
         Exception exception = assertThrowsExactly(RuntimeException.class, () -> {
             slotsRequest.getAvailableSlots(workshop, filter);

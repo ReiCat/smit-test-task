@@ -1,4 +1,4 @@
-package com.smit_test_task.backend;
+package com.smit_test_task.backend.processor;
 
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.processor.JsonProcessor;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
-public class TestJsonProcessor {
+public class JsonProcessorTest {
 
     private JsonProcessor jsonProcessor = new JsonProcessor();
 

@@ -1,4 +1,4 @@
-package com.smit_test_task.backend;
+package com.smit_test_task.backend.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

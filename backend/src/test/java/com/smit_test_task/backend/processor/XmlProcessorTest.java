@@ -1,4 +1,4 @@
-package com.smit_test_task.backend;
+package com.smit_test_task.backend.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.processor.XmlProcessor;
 
-public class TestXmlProcessor {
+public class XmlProcessorTest {
 
     private XmlProcessor xmlProcessor = new XmlProcessor();
 
