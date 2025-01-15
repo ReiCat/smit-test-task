@@ -14,14 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
-public class JsonProcessorTest {
+public class JsonProcessorTest extends AbstractProcessorTest {
 
-    private JsonProcessor jsonProcessor = new JsonProcessor();
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+    // @BeforeEach
+    // public void setUp() {
+    // MockitoAnnotations.openMocks(this);
+    // }
 
     @Test
     public void testProcessSlotsJsonThrowsRuntimeException() throws Exception {

@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.InvalidUrlException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,10 +22,7 @@ import com.smit_test_task.backend.model.BookingFilter;
 import com.smit_test_task.backend.processor.JsonProcessor;
 import com.smit_test_task.backend.processor.XmlProcessor;
 
-public class SlotsRequest {
-
-    @Autowired
-    private RestTemplate restTemplate = new RestTemplate();
+public class SlotsRequest extends AbstractRequest {
 
     private final JsonProcessor jsonProcessor = new JsonProcessor();
 

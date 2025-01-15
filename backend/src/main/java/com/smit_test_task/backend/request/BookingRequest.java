@@ -28,13 +28,9 @@ import com.smit_test_task.backend.model.Slot;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BookingRequest {
-
-    @Autowired
-    private RestTemplate restTemplate = new RestTemplate();
+public class BookingRequest extends AbstractRequest {
 
     private URI buildUri(String apiUrl, String bookingID) throws InvalidUrlException {
-
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", bookingID.toString());
         URI url = UriComponentsBuilder.fromUriString(apiUrl)
@@ -53,9 +49,7 @@ public class BookingRequest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(contentType));
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
-        ResponseEntity<T> result = restTemplate.exchange(url, HttpMethod.valueOf(method),
-                entity, responseType);
-
+        ResponseEntity<T> result = this.restTemplate.exchange(url, HttpMethod.valueOf(method), entity, responseType);
         return result;
     }
 
@@ -69,17 +63,14 @@ public class BookingRequest {
         contactInformation.contactInformation = booking.getContactInformation();
         switch (workshop.getContentType()) {
             case "application/json": {
-                ObjectMapper objectMapper = new ObjectMapper();
-                String json = objectMapper.writeValueAsString(contactInformation);
+                String json = this.objectMapper.writeValueAsString(contactInformation);
                 ResponseEntity<Slot> res = this.executeRequest(url.toString(), bookSlotPath.method, json,
                         workshop.getContentType(),
                         Slot.class);
                 return res.getBody();
             }
             case "text/xml": {
-                XmlMapper xmlMapper = new XmlMapper();
-
-                String xml = xmlMapper.writer().withRootName(bookSlotPath.getDynamicRootName())
+                String xml = this.xmlMapper.writer().withRootName(bookSlotPath.getDynamicRootName())
                         .writeValueAsString(contactInformation);
 
                 ResponseEntity<Slot> res = this.executeRequest(url.toString(), bookSlotPath.method, xml,

@@ -13,14 +13,7 @@ import org.mockito.MockitoAnnotations;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.model.Slot;
 
-public class XmlProcessorTest {
-
-    private XmlProcessor xmlProcessor = new XmlProcessor();
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+public class XmlProcessorTest extends AbstractProcessorTest {
 
     @Test
     public void testProcessSlotsXmlThrowsRuntimeException() throws Exception {

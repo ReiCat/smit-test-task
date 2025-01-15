@@ -31,19 +31,12 @@ import com.smit_test_task.backend.model.Slot;
 import com.smit_test_task.backend.model.Workshop;
 
 @ExtendWith(SpringExtension.class)
-public class SlotsRequestTest {
+public class SlotsRequestTest extends AbstractRequestTest {
 
     private Date fromDate;
     private Date toDate;
 
-    private Workshop workshop;
-
     private BookingFilter filter;
-    private Map<String, Path> paths;
-    private Path slotsPath;
-
-    @Mock
-    private RestTemplate restTemplate;
 
     @InjectMocks
     private SlotsRequest slotsRequest;

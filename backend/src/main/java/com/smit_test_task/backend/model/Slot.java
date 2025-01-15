@@ -1,7 +1,6 @@
 package com.smit_test_task.backend.model;
 
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
@@ -45,14 +44,5 @@ public class Slot<T> {
         this.time = time;
         this.available = available;
     }
-
-    // @JsonCreator
-    // public Slot(
-    // @JsonProperty("id") T ID,
-    // @JsonProperty("time") String time) {
-    // this.ID = ID;
-    // this.time = time;
-    // this.available = true;
-    // }
 
 }
