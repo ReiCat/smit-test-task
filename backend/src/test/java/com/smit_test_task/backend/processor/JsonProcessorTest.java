@@ -1,6 +1,5 @@
 package com.smit_test_task.backend.processor;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.smit_test_task.backend.model.Slot;
 
@@ -10,16 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 
 public class JsonProcessorTest extends AbstractProcessorTest {
-
-    // @BeforeEach
-    // public void setUp() {
-    // MockitoAnnotations.openMocks(this);
-    // }
 
     @Test
     public void testProcessSlotsJsonThrowsRuntimeException() throws Exception {

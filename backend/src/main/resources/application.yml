@@ -9,10 +9,10 @@ workshops:
       url: http://192.168.1.2:9004
       apiPrefix: /api/v2
       paths:
-        getSlots: 
+        getSlots:
           path: /tire-change-times?from={from}&page={page}&amount={amount}
           method: GET
-        bookSlot: 
+        bookSlot:
           path: /tire-change-times/{id}/booking
           method: POST
       contentType: application/json
@@ -24,10 +24,10 @@ workshops:
       url: http://192.168.1.2:9003
       apiPrefix: /api/v1
       paths:
-        getSlots: 
+        getSlots:
           path: /tire-change-times/available?from={from}&until={to}
           method: GET
-        bookSlot: 
+        bookSlot:
           path: /tire-change-times/{id}/booking
           method: PUT
           dynamicRootName: london.tireChangeBookingRequest

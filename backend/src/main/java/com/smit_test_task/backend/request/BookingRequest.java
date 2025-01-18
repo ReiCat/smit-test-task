@@ -53,14 +53,36 @@ public class BookingRequest extends AbstractRequest {
         return result;
     }
 
-    public Slot bookSlot(Workshop workshop, Booking booking)
-            throws InvalidUrlException, RestClientException, JsonProcessingException, JsonMappingException {
+    public Slot bookSlot(Workshop workshop, Booking booking) throws RuntimeException, InvalidUrlException,
+            RestClientException, JsonProcessingException, JsonMappingException {
+
+        if (workshop == null) {
+            throw new RuntimeException("Workshop param is undefined");
+        }
+
+        if (booking == null) {
+            throw new RuntimeException("Booking param is undefined");
+        }
+
         Map<String, Path> workshopPaths = workshop.getPaths();
+        if (workshopPaths == null) {
+            throw new RuntimeException("Workshop paths are undefined");
+        }
+
         Path bookSlotPath = workshopPaths.get("bookSlot");
+        if (bookSlotPath == null) {
+            throw new RuntimeException("Workshop bookSlot path is undefined");
+        }
+
+        String bookingContactInformation = booking.getContactInformation();
+        if (bookingContactInformation == null) {
+            throw new RuntimeException("Booking contact information is undefined");
+        }
+
         String apiUrl = workshop.getUrl() + workshop.getApiPrefix() + bookSlotPath.path;
         URI url = this.buildUri(apiUrl, booking.getID().toString());
         ContactInformation contactInformation = new ContactInformation();
-        contactInformation.contactInformation = booking.getContactInformation();
+        contactInformation.contactInformation = bookingContactInformation;
         switch (workshop.getContentType()) {
             case "application/json": {
                 String json = this.objectMapper.writeValueAsString(contactInformation);

@@ -97,6 +97,10 @@ public class WorkshopsController {
     public ResponseEntity<Slot> book(@RequestBody Booking<?> booking)
             throws InvalidUrlException, RestClientException, JacksonException {
 
+        System.err.println(booking.getContactInformation());
+        System.err.println(booking.getWorkshopID());
+        System.err.println(booking.getID());
+
         Workshop workshop = workshops.getWorkshopByID(booking.getWorkshopID());
         if (workshop == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workshop not found");
@@ -113,6 +117,9 @@ public class WorkshopsController {
         } catch (HttpClientErrorException e) {
             ErrorMessage error = this.errorProcessor.processError(
                     workshop.getContentType(), e.getResponseBodyAsString());
+            System.out.println(error.code);
+            System.out.println(error.message);
+
             switch (Integer.parseInt(error.code)) {
                 case 400:
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.message);
@@ -122,12 +129,10 @@ public class WorkshopsController {
                     throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                             error.message);
 
-                case 500:
+                default:
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                             error.message);
             }
-
-            return null;
         }
     }
 

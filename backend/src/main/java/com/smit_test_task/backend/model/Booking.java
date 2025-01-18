@@ -1,5 +1,6 @@
 package com.smit_test_task.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -17,5 +18,15 @@ public class Booking<T> {
 
     @JsonProperty("contactInformation")
     private String contactInformation;
+
+    @JsonCreator
+    public Booking(
+            @JsonProperty("id") T ID,
+            @JsonProperty("workshopID") Integer workshopID,
+            @JsonProperty("contactInformation") String contactInformation) {
+        this.ID = ID;
+        this.workshopID = workshopID;
+        this.contactInformation = contactInformation;
+    }
 
 }
